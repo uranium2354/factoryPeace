@@ -36,7 +36,7 @@ public class Manipulator extends MapElement{
         super(id, direction);
 
         this.mySurfaceView = mySurfaceView;
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.manipulator);
+        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_manipulator);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;

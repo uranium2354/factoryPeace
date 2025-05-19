@@ -1,9 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
-import static com.example.surfacedrawexample.Map.ArrayId.getImageId;
 
-import android.content.ClipData;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,9 +11,6 @@ import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
 import com.example.surfacedrawexample.R;
-
-import java.lang.reflect.Array;
-import java.util.Vector;
 
 public class TransportBelt extends MapElement {
     Resources resources;
@@ -45,7 +40,7 @@ public class TransportBelt extends MapElement {
 
         super(id, direction);
 
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.transport_belt);
+        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_transportbelt);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;

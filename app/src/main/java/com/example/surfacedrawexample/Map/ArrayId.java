@@ -16,7 +16,7 @@ public class ArrayId {
         arrayId[0] = null;
         TransportBelt transportBelt = new TransportBelt(1, 0, mySurfaceView, resources, 0, 0 );
         arrayId[1] = transportBelt;
-        image[1] =   BitmapFactory.decodeResource(resources, R.drawable.cathead);
+        image[1] =   BitmapFactory.decodeResource(resources, R.drawable.item_cathead);
         TEXTURE_SIZE = transportBelt.TEXTURE_SIZE;
         Manipulator manipulator = new Manipulator( 2, 0, mySurfaceView, resources, 0, 0 );
         arrayId[2] = manipulator;
