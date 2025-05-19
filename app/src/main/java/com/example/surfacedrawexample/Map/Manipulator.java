@@ -28,13 +28,16 @@ public class Manipulator extends MapElement{
     int speed = 3000;
     long lastUpdateTime;
     TransportBeltItem item;
-    int[] dx = {1, -1, 0, 0, 0, 1, 0, -1, 1, 0, -1, 0};
+    int[] dx = {1, -1, 0, 0, 0, 1, 0, -1, 1, 0, -1, 0};//TODO сдвиги туда куда манипулятор положет придмет
     int[] dy = {0, 0, -1, 1, -1, 0, -1, 0, 0, 1, 0, 1};
-    int[] dx2 = {-1, 1, 0, 0, 1, 0, -1, 0, 0, 1, 0, -1};
+    int[] dx2 = {-1, 1, 0, 0, 1, 0, -1, 0, 0, 1, 0, -1};//TODO откуда он его берёт
     int[] dy2 = {0, 0, 1, -1, 0, -1, 0, -1, 1, 0, 1, 0};
     public Manipulator(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y) {
-        super(id, direction);
-
+        super(id, direction, x, y, true, Manipulator.class);
+        object = this;
+        constructor(id, direction, mySurfaceView, resources, x, y);
+    }
+    public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y) {
         this.mySurfaceView = mySurfaceView;
         texture =  BitmapFactory.decodeResource(resources, R.drawable.map_manipulator);
         ArrayX = x;
@@ -45,7 +48,7 @@ public class Manipulator extends MapElement{
         this.direction = direction;
         icon = Bitmap.createBitmap(texture, 0, 0, (int) widthFrame, (int)heightFrame);
         lastUpdateTime = System.currentTimeMillis();
-        object = this;
+
         item = null;
     }
 

@@ -1,6 +1,7 @@
 package com.example.surfacedrawexample.interfaces;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -53,12 +54,11 @@ public class OnSwipeTouchListener implements OnTouchListener {
                 }
                 yStart = event.getY();
                 xStart = event.getX();
-
+                player.setStartSelectDestroy(new Point((int) (event.getX() - mySurfaceView.translateX), (int) (event.getY()- mySurfaceView.translateY)));
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_CANCEL:
-
                 for(int i = 0; i < fingers.size(); i++){
                     if(fingers.get(i) == fingerId){
                         fingers.remove(i);
@@ -66,6 +66,9 @@ public class OnSwipeTouchListener implements OnTouchListener {
                            isRemove = true;
                         }
                     }
+                }
+                if(fingers.size() == 0){
+                    player.regionDestroy( (int) (event.getX()- mySurfaceView.translateX), (int) (event.getY()-mySurfaceView.translateY));
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -80,6 +83,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
                     yStart = event.getY();
                     xStart = event.getX();
                     player.moveCord(-(int) diffX, -(int) diffY);
+                    player.setDeltaSelectDestroy(new Point((int) diffX, (int) diffY));
                 }
                 else if(fingers.size() == 2){
                     float dist2 = distance(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
@@ -103,7 +107,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            player.select(e.getX()- mySurfaceView.translateX, e.getY() -mySurfaceView.translateY);
+            player.select(e.getX() - mySurfaceView.translateX, e.getY() - mySurfaceView.translateY);
               return true;
         }
 
@@ -116,15 +120,12 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            boolean result = false;
-            try {
-                //   player.select(e2.getX()- mySurfaceView.translateX, e2.getY() -mySurfaceView.translateX);
-                result = true;
 
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-            return result;
+
+
+
+
+            return true;
         }
         public void onSwipeLeft() {
         }

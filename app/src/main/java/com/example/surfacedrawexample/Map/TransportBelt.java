@@ -24,7 +24,7 @@ public class TransportBelt extends MapElement {
 
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
-    int speed = 500, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
+    int speed = 200, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
     TransportBeltItem[] item;
     long lastUpdateTime = 0;
     int xS, yS, xT, yT;
@@ -36,10 +36,19 @@ public class TransportBelt extends MapElement {
     int[] dyi = {0, 0, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1};
     int n ;
    // Vector<Integer> moveItem = new Vector<>();
+    /* public TransportBelt(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y, MapElement superClass){
+
+       super(id, direction,x, y, true,  TransportBelt.class);
+       superClass.object = this;
+       constructor(id, direction, mySurfaceView, resources, x, y);}
+  */
     public TransportBelt(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
 
-        super(id, direction);
-
+        super(id, direction,x, y, true,  TransportBelt.class);
+        object = this;
+        constructor(id, direction, mySurfaceView, resources, x, y);
+    }
+    public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
         texture =  BitmapFactory.decodeResource(resources, R.drawable.map_transportbelt);
         ArrayX = x;
         ArrayY = y;
@@ -49,7 +58,6 @@ public class TransportBelt extends MapElement {
         this.direction = direction;
         icon = Bitmap.createBitmap(texture, (int)heightFrame/2, (int)widthFrame / 2, (int) widthFrame, (int)heightFrame);
         lastUpdateTime = System.currentTimeMillis();
-        object = this;
         item = new TransportBeltItem[]{null, null, new TransportBeltItem(1, 0, 0, TEXTURE_SIZE)};
         n = item.length;
         changeSize(TEXTURE_SIZE);
@@ -80,6 +88,28 @@ public class TransportBelt extends MapElement {
                 ( ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1)* TEXTURE_SIZE);
 
         canvas.drawBitmap(texture,src, dst , paint);
+        int quantityin = 0, newdir = 0;
+        for(int i = 0; i < 4; i++){
+            int nx = ArrayX + dx[i];
+            int ny = ArrayY + dy[i];
+            MapElement el = getEl(nx, ny);
+            if(el != null && el.tag == "transportItem"){
+                if(nx + dx[el.rotation] == ArrayX && ny + dy[el.rotation] == ArrayY){
+                    quantityin++;
+                    for(int j = 0; j < 12; j++){
+                        int nx2 = ArrayX + dx2[j];
+                        int ny2 = ArrayY + dy2[j];
+
+                        if(nx2 == nx && ny2 == ny && dx[j] == dx[direction] && dy[j] == dy[direction]){
+                            newdir = j;
+                        }
+                    }
+                }
+            }
+        }
+        if(quantityin == 1){
+            direction = newdir;
+        }
     }
 
     @Override
@@ -90,7 +120,7 @@ public class TransportBelt extends MapElement {
         }
 
     }
-
+    boolean isСycle = false;
     @Override
     synchronized public void updateState(){
         if(System.currentTimeMillis() - lastUpdateTime >= speed){
@@ -120,6 +150,12 @@ public class TransportBelt extends MapElement {
         int ny = ArrayY + dy[direction];
         MapElement el = getEl(nx, ny);
         if(el != null && el.tag == "transportItem"){
+            if(isСycle == false){
+                isСycle = true;
+                el.object.updateState();
+                isСycle = false;
+            }
+
             if(el.object.pullItem(it, true)){
                 return true;
             }
@@ -139,12 +175,14 @@ public class TransportBelt extends MapElement {
     }
     @Override
     TransportBeltItem getItem(boolean isChange){
-         if(item[(int)n / 2] != null){
-            TransportBeltItem ans =item[(int)n / 2];
-            if(isChange)
-             item[(int)n / 2] = null;
-             return ans;
-         }
+        for(int i = 0; i < item.length; i++){
+            if(item[i] != null){
+                TransportBeltItem ans =item[i];
+                if(isChange)
+                    item[i] = null;
+                return ans;
+            }
+        }
          return null;
     }
     @Override

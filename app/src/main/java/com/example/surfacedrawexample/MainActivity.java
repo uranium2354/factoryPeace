@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity   {
         MySurfaceView mySurfaceView = (MySurfaceView) findViewById(R.id.mySurfaceView);
         Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
         mySurfaceView.player = player;
-       MapArray m = new MapArray(getResources(), mySurfaceView);
+       MapArray m = new MapArray(getResources(), mySurfaceView, player);
         LogicThread logicThread = new LogicThread();
         logicThread.setRunning(true);
         logicThread.start();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity   {
 
     int rowNumber = 0;
 
-    public void addRow(Drawable[] view, TableLayout tableLayout) {
+    public void addRow(Drawable[] view, TableLayout tableLayout) {//TODO добавление ряда в инвентарь
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         TableRow tr = (TableRow) inflater.inflate(R.layout.table_row, null);
         for(int i = 0; i < view.length; i++){

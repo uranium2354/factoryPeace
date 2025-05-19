@@ -15,6 +15,7 @@ import android.widget.TableRow;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 
 import com.example.surfacedrawexample.MainActivity;
@@ -45,6 +46,8 @@ public class Storage  {
     MainActivity main;
     Resources resources;
     Button buttonRotate;
+    Button buttonAccept;
+    Button buttonDestroy;
    public Storage(int numberOfItemRow, MainActivity main, TableLayout tableLayout, ConstraintLayout constraintLayout, Resources resources, Player player){
         idCell.add(1);
         idCell.add(2);
@@ -55,10 +58,26 @@ public class Storage  {
         drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
         drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
         buttonRotate = constraintLayout.findViewById(R.id.rotateButton);
+
         buttonRotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 player.rotationPlace();
+                buttonRotate.setRotation(player.rotationPlace * 90);
+            }
+        });
+        buttonAccept = constraintLayout.findViewById(R.id.acceptButton);
+        buttonAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.setIsPlace();
+            }
+        });
+        buttonDestroy = constraintLayout.findViewById(R.id.destroyButton);
+        buttonDestroy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.setIsDestroy();
             }
         });
         this.resources = resources;

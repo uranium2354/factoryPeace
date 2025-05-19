@@ -103,17 +103,17 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         }
         //mapWorker.draw(canvas);
        // player.move(1, 1);
-        translateX = canvas.getWidth() / 2 +  -player.x * TEXTURE_SIZE;
+        translateX = canvas.getWidth() / 2  -player.x * TEXTURE_SIZE;
         translateY = canvas.getHeight() / 2 -  player.y * TEXTURE_SIZE;
        canvas.translate(translateX , translateY);
         character.x = player.x * TEXTURE_SIZE;
         character.y = player.y * TEXTURE_SIZE;
         character.draw(canvas);
-
+        
         int xPlayerCell = (int)player.x;
         int yPlayerCell = (int)player.y;
-        renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 1;
-        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE + 1;
+        renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 2;
+        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE +2;
         int startI = xPlayerCell - renderingCellX;
         int topI = xPlayerCell + renderingCellX;
         int startJ = yPlayerCell - renderingCellY;
@@ -141,11 +141,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         currentFrame++;
-       // if(currentFrame > 100){
-          //  changeDeltaSize(-1);
-       // }
-       // mapWorker.changeMap();
-      //  t.draw(canvas);
+        player.draw(canvas);
         TEXTURE_SIZE += dts;
         offsetCanvas += dts;
         TEXTURE_SIZE = Math.max(minSize, TEXTURE_SIZE);
