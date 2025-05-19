@@ -24,17 +24,15 @@ public class OnSwipeTouchListener implements OnTouchListener {
     private final GestureDetector gestureDetector;
     MySurfaceView mySurfaceView;
     Player player;
-    public OnSwipeTouchListener (Context ctx, Player player, TextView textView, MySurfaceView mySurfaceView){
+    public OnSwipeTouchListener (Context ctx, Player player,  MySurfaceView mySurfaceView){
        this.player = player;
         gestureDetector = new GestureDetector(ctx, new GestureListener());
-        this.textView = textView;
         this.mySurfaceView = mySurfaceView;
     }
     float xStart = 0, yStart= 0;
     float dist = 0;
     ArrayList<Integer> fingers = new ArrayList<Integer>();
     // public boolean onTouchEvent (MotionEvent event)
-    TextView textView;
     float distance(float x1, float y1, float x2, float y2){
         float d= (x1 - x2 ) * (x1 - x2 ) + (y1 - y2) * (y1 - y2);
         return (float) Math.sqrt(d);
@@ -49,7 +47,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
                 fingers.add(fingerId);
-                if(fingers.size() == 2){
+                if(fingers.size() == 2 && event.findPointerIndex(1) != -1){
                     dist = distance(event.getX(0), event.getY(0), event.getX(1), event.getY(1));
                 }
                 yStart = event.getY();
@@ -93,7 +91,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
 
 
-        textView.setText(Integer.toString(fingers.size()));
+        //textView.setText(Integer.toString(fingers.size()));
         return true;
     }
 

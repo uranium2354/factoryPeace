@@ -14,7 +14,9 @@ public class DrawThread extends Thread{
         this.mySurfaceView = mySurfaceView;
         isRun = false;
         prevTime = System.currentTimeMillis();
+
     }
+
     @Override
     public void run() {
         while (isRun){
