@@ -1,11 +1,13 @@
 package com.example.surfacedrawexample.Map;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 
 import com.example.surfacedrawexample.MySurfaceView;
 
 public class MapArray {
     public static MapElement[][]  map = new MapElement[10][10];
+    public static Hologram[][] mapHologram = new Hologram[10][10];
     TransportBeltItem t;
     public MapArray(Resources resources, MySurfaceView mySurfaceView){
         map[5][5] = new TransportBelt(1, 0, mySurfaceView, resources, 5 , 5);

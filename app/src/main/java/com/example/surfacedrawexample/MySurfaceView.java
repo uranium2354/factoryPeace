@@ -2,7 +2,7 @@ package com.example.surfacedrawexample;
 
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
 import static com.example.surfacedrawexample.Map.MapArray.map;
-
+import static com.example.surfacedrawexample.Map.MapArray.mapHologram;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -42,7 +43,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     Sprite character;
     int minSize = 20;
     int offsetCanvas = 0;
-
+    public float translateX = 0;
+    public float translateY = 0;
     boolean isMapGenerate = false;
     MapWorker mapWorker;
     TransportBelt transport_belt1, transport_belt2;
@@ -58,6 +60,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         holder = getHolder();
         holder.addCallback(this);//"активируем" интерфейс SurfaceHolder.Callback
         paint = new Paint();
+        paint.setARGB(100, 0, 0, 0);
         x = 400;
         y = 1100;
         resources = getResources();
@@ -77,6 +80,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         holder = getHolder();
         holder.addCallback(this);//"активируем" интерфейс SurfaceHolder.Callback
         paint = new Paint();
+        paint.setARGB(100, 0, 0, 0);
         x = 400;
         y = 1100;
         resources = getResources();
@@ -99,14 +103,17 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         }
         //mapWorker.draw(canvas);
        // player.move(1, 1);
-
-       canvas.translate(canvas.getWidth() / 2 +  -player.x * TEXTURE_SIZE  , canvas.getHeight() / 2 -  player.y * TEXTURE_SIZE);
+        translateX = canvas.getWidth() / 2 +  -player.x * TEXTURE_SIZE;
+        translateY = canvas.getHeight() / 2 -  player.y * TEXTURE_SIZE;
+       canvas.translate(translateX , translateY);
         character.x = player.x * TEXTURE_SIZE;
         character.y = player.y * TEXTURE_SIZE;
         character.draw(canvas);
 
         int xPlayerCell = (int)player.x;
         int yPlayerCell = (int)player.y;
+        renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 1;
+        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE + 1;
         int startI = xPlayerCell - renderingCellX;
         int topI = xPlayerCell + renderingCellX;
         int startJ = yPlayerCell - renderingCellY;
@@ -118,6 +125,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                         case 2:
                             if (map[i][j] != null) {
                                 map[i][j].object.draw(canvas, currentFrame);
+                            }
+                            if(mapHologram[i][j] != null){
+                                mapHologram[i][j].draw(canvas);
                             }
                             break;
                         case 3:
@@ -157,14 +167,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             touchX = event.getX();
             touchY = event.getY();
-            //calculate();
-            /*for (Sprite s: sprites) {
-                s.setTouchX(touchX);
-                s.setTouchY(touchY);
-            }
-            Sprite sprite = new Sprite(image, this, touchX, touchY);
-            sprites.add(sprite);*/
-
         }
         return true;
     }

@@ -14,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import com.example.surfacedrawexample.MainActivity;
@@ -43,17 +44,25 @@ public class Storage  {
    int numberOfItemRow = 4;
     MainActivity main;
     Resources resources;
-   public Storage(int numberOfItemRow, MainActivity main, TableLayout tableLayout, Resources resources, Player player){
+    Button buttonRotate;
+   public Storage(int numberOfItemRow, MainActivity main, TableLayout tableLayout, ConstraintLayout constraintLayout, Resources resources, Player player){
         idCell.add(1);
         idCell.add(2);
         idCell.add(2);
         idCell.add(2);
         drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-       drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-       drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-       drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
+        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
+        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
+        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
+        buttonRotate = constraintLayout.findViewById(R.id.rotateButton);
+        buttonRotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                player.rotationPlace();
+            }
+        });
         this.resources = resources;
-       this.tableLayout = tableLayout;
+        this.tableLayout = tableLayout;
         this.main = main;
         this.numberOfItemRow = numberOfItemRow;
         this.player = player;

@@ -13,7 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,8 +39,9 @@ public class MainActivity extends AppCompatActivity   {
         ConstraintLayout mainLayout = findViewById(R.id.main);
         TextView textView = findViewById(R.id.text2);
         super.onCreate(savedInstanceState);
-        Player player = new Player(0, getResources(), 0, 0, textView);
+
         MySurfaceView mySurfaceView = (MySurfaceView) findViewById(R.id.mySurfaceView);
+        Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
         mySurfaceView.player = player;
        MapArray m = new MapArray(getResources(), mySurfaceView);
         LogicThread logicThread = new LogicThread();
@@ -51,8 +52,10 @@ public class MainActivity extends AppCompatActivity   {
         button = new Button(this);
         storage = findViewById(R.id.storage);
 
-        mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {});
-        storageClass = new Storage(4, this, tableLayout, getResources(), player);
+        mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {
+
+        });
+        storageClass = new Storage(4, this, tableLayout,mainLayout, getResources(), player);
         storageClass.addRowStorage(0);
     }
     List<Button> buttons = new ArrayList<>();

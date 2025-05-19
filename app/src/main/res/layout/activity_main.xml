@@ -28,6 +28,26 @@
         app:layout_constraintBottom_toTopOf="parent"
         android:id = "@+id/storage">
     </TableLayout>
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_rotation"
+        app:layout_constraintStart_toEndOf="@+id/storage"
+        android:id="@+id/rotateButton"
+        />
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_accept"
+        app:layout_constraintStart_toEndOf="@+id/rotateButton"
+        android:id="@+id/acceptButton"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

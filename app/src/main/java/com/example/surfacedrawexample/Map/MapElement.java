@@ -2,6 +2,7 @@ package com.example.surfacedrawexample.Map;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 public abstract class MapElement {
 
@@ -12,6 +13,7 @@ public abstract class MapElement {
     int hp;
     int startHp;
     public MapElement object;
+    Paint paint;
     Bitmap icon;
     public MapElement(int id, int rotation){
         this.id = id;
@@ -24,6 +26,9 @@ public abstract class MapElement {
     }
     void damage(int a){}
     void hill(int a){}
+    public void setTransparency(int a){
+        paint.setARGB(a, 0, 0,0 );
+    }
     boolean pullItem(TransportBeltItem id, boolean isChange){return false;}
     TransportBeltItem getItem(boolean isChange){return null;}
     public void draw(Canvas canvas, long currentFrame){}

@@ -3,6 +3,7 @@ package com.example.surfacedrawexample.Map;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import com.example.surfacedrawexample.MySurfaceView;
 import com.example.surfacedrawexample.R;
@@ -22,7 +23,12 @@ public class ArrayId {
         arrayId[2] = manipulator;
         image[2] = manipulator.icon;
     }
-
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
 
     public static Object getClassId(int id){
         if(id < arrayId.length){
@@ -35,5 +41,8 @@ public class ArrayId {
             return image[id];
         }
         return null;
+    }
+    public static Bitmap getStaticImage(int id, int rotate){
+        return RotateBitmap(getImageId(id), rotate * 90);
     }
 }

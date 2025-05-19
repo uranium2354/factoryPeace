@@ -38,6 +38,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         return (float) Math.sqrt(d);
     }
     boolean isRemove = false;
+
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction() & MotionEvent.ACTION_MASK;
         int pointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -92,7 +93,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
 
 
         //textView.setText(Integer.toString(fingers.size()));
-        return true;
+        return gestureDetector.onTouchEvent(event);
     }
 
     private final class GestureListener extends SimpleOnGestureListener {
@@ -101,29 +102,24 @@ public class OnSwipeTouchListener implements OnTouchListener {
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         @Override
-        public boolean onDown(MotionEvent e) {
+        public boolean onSingleTapUp(MotionEvent e) {
+            player.select(e.getX()- mySurfaceView.translateX, e.getY() -mySurfaceView.translateY);
               return true;
         }
 
         @Override
-        public boolean onScroll(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
-            return super.onScroll(e1, e2, distanceX, distanceY);
+        public boolean onContextClick(@NonNull MotionEvent e) {
+            //onClick(e.getX(), e.getY());
+
+            return super.onContextClick(e);
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             boolean result = false;
             try {
-                float length = (e2.getY() - e1.getY()) * (e2.getY() - e1.getY()) +
-                        (e2.getX() - e1.getX()) * (e2.getX() - e1.getX());
-                float diffY = e2.getY() - e1.getY();
-                float diffX = e2.getX() - e1.getX();
-                length = (float) Math.sqrt(length);
-                onSwipeLeft();
-                  //  if (length > SWIPE_THRESHOLD ) {
-                        //player.move((int)diffX, (int)diffY);
-                        result = true;
-                 //   }
+                //   player.select(e2.getX()- mySurfaceView.translateX, e2.getY() -mySurfaceView.translateX);
+                result = true;
 
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -131,6 +127,9 @@ public class OnSwipeTouchListener implements OnTouchListener {
             return result;
         }
         public void onSwipeLeft() {
+        }
+        public void onClick(float x, float y){
+
         }
 
     }
