@@ -21,7 +21,7 @@ public class TransportBelt extends MapElement {
     int ICON_SIZE =  2;
     int IMAGE_COLUMN = 32;
     int IMAGE_ROWS = 40;
-    Paint paint;
+
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
     int speed = 500, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
@@ -80,7 +80,6 @@ public class TransportBelt extends MapElement {
                 ( ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1)* TEXTURE_SIZE);
 
         canvas.drawBitmap(texture,src, dst , paint);
-        paint.setARGB(255, 250, 0, 0);
     }
 
     @Override
