@@ -30,12 +30,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-android {
-    compileSdkVersion 33  // Ваша версия SDK
-    // ...
 
-
-}
 dependencies {
 
     implementation(libs.appcompat)

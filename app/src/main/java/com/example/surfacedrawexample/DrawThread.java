@@ -26,6 +26,7 @@ public class DrawThread extends Thread{
                 canvas = holder.lockCanvas();
                 synchronized (holder){
                     mySurfaceView.draw(canvas);
+
                 }
                 if(canvas != null){
                     holder.unlockCanvasAndPost(canvas);

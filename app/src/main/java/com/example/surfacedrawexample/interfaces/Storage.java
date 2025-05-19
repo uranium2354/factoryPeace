@@ -17,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.surfacedrawexample.Map.ArrayId;
 import com.example.surfacedrawexample.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Storage  {
-    List<Integer> idCell;
-    List<Drawable> drawables;
+    List<Integer> idCell= new ArrayList<>();
+    List<Drawable> drawables= new ArrayList<>();
    static public View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

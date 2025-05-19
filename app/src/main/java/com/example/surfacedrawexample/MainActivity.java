@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity   {
             }
         });
         Storage storageClass = new Storage(4);
-        addRow(drawable, tableLayout);
+     //   addRow(drawable, tableLayout);
 
     }
     List<Button> buttons = new ArrayList<>();
