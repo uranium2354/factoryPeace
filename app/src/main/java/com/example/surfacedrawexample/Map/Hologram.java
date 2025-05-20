@@ -1,6 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
+import static com.example.surfacedrawexample.Map.ArrayId.getScaleId;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,6 +17,8 @@ public class Hologram {
     int widthFrame;
     int heightFrame;
     public int orderIndex;
+    public int mapScaleX = 1;
+    public int mapScaleY = 1;
     Paint paint;
     public Hologram(Bitmap image, int id, int rotation, int x, int y, int orderIndex){
         this.id = id;
@@ -26,12 +29,12 @@ public class Hologram {
         widthFrame = image.getWidth();
         heightFrame = image.getHeight();
         paint = new Paint();
-        paint.setARGB(100, 0, 0, 0);
+        paint.setARGB(100 / getScaleId(id).x / getScaleId(id).y, 0, 0, 0);
         this.orderIndex = orderIndex;
     }
     public void draw(Canvas canvas){
         Rect src = new Rect(0, 0, widthFrame,heightFrame );
-        Rect dst = new Rect((int)x * TEXTURE_SIZE, (int)y* TEXTURE_SIZE, ( x + 1) * TEXTURE_SIZE, (y + 1)* TEXTURE_SIZE);
+        Rect dst = new Rect((int)x * TEXTURE_SIZE, (int)y* TEXTURE_SIZE, ( x + mapScaleX) * TEXTURE_SIZE, (y + mapScaleY)* TEXTURE_SIZE);
 
         canvas.drawBitmap(image ,src, dst , paint);
     }

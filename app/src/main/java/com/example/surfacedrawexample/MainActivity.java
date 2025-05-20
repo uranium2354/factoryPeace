@@ -21,6 +21,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.surfacedrawexample.Map.Crafts;
 import com.example.surfacedrawexample.Map.MapArray;
 import com.example.surfacedrawexample.interfaces.OnSwipeTouchListener;
 import com.example.surfacedrawexample.interfaces.Storage;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity   {
         ConstraintLayout mainLayout = findViewById(R.id.main);
         TextView textView = findViewById(R.id.text2);
         super.onCreate(savedInstanceState);
-
+        Crafts crafts = new Crafts();
         MySurfaceView mySurfaceView = (MySurfaceView) findViewById(R.id.mySurfaceView);
         Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
         mySurfaceView.player = player;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity   {
         });
         storageClass = new Storage(4, this, tableLayout,mainLayout, getResources(), player);
         storageClass.addRowStorage(0);
+        storageClass.addRowStorage(1);
     }
     List<Button> buttons = new ArrayList<>();
 

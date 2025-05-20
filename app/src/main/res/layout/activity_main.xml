@@ -60,11 +60,21 @@
         app:layout_constraintStart_toEndOf="@+id/acceptButton"
         android:id="@+id/destroyButton"
         />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/destroyButton"
+        android:id="@+id/craftMenu">
+
+
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="5658585"
-        android:textSize="85sp"
+        android:textSize="5sp"
         android:id="@+id/text2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

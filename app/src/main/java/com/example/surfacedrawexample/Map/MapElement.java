@@ -14,11 +14,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public class MapElement {
-
-    int id;
+    public int ArrayX, ArrayY;
+    public int id;
     public int TEXTURE_SIZE= 128;
     int rotation = 0;
     String tag = "none";
+    int mapScaleX = 1;
+    int mapScaleY = 1;
     int hp;
     int startHp;
     public MapElement object;//TODO обект который размещён на карте например TransportBelt
@@ -56,10 +58,11 @@ public class MapElement {
         paint.setARGB(a, 0, 0,0 );
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){}
-    boolean pullItem(TransportBeltItem id, boolean isChange){return false;}
-    TransportBeltItem getItem(boolean isChange){return null;}
+    boolean pullItem(TransportBeltItem id, boolean isChange, int PosX, int PosY){return false;}
+    TransportBeltItem getItem(boolean isChange, int PosX, int PosY){return null;}
     public void draw(Canvas canvas, long currentFrame){}
     public void drawItems(Canvas canvas){}
+    public void drawUpItem(Canvas canvas, long currentF){}
     public void changeSize(int ts){};
     synchronized public void updateState(){}
 }

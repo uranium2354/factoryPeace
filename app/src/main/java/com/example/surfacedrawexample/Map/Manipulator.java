@@ -17,14 +17,14 @@ public class Manipulator extends MapElement{
     Bitmap texture ;
     int direction;
     float widthFrame, heightFrame;
-    int ArrayX, ArrayY;
     MySurfaceView mySurfaceView;
     int ICON_SIZE =  2;
-    int IMAGE_COLUMN = 1;
-    int IMAGE_ROWS = 1;
+    int IMAGE_COLUMN = 14;
+    int IMAGE_ROWS = 4;
     Paint paint;
     int  heightScreen,  widthScreen;
-    int currentFrame = 0;
+    long currentFrame = 0;
+    long startFrame = -100;
     int speed = 3000;
     long lastUpdateTime;
     TransportBeltItem item;
@@ -43,6 +43,7 @@ public class Manipulator extends MapElement{
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
+     //   widthFrame--;
         heightFrame = this.texture.getHeight()/(float)IMAGE_ROWS;
         paint = new Paint();
         this.direction = direction;
@@ -57,7 +58,7 @@ public class Manipulator extends MapElement{
         int ny = ArrayY + dy[direction];
         MapElement el = getEl(nx, ny);
         if(el != null){
-            if(el.object.pullItem(it, isChange)){
+            if(el.object.pullItem(it, isChange, ArrayX, ArrayY)){
                 return true;
             }
         }
@@ -68,18 +69,24 @@ public class Manipulator extends MapElement{
         int ny = ArrayY + dy2[direction];
         MapElement el = getEl(nx, ny);
         if(el != null){
-            return el.object.getItem(isChange);
+            return el.object.getItem(isChange, ArrayX, ArrayY);
         }
         return null;
     }
 
     @Override
     public void draw(Canvas canvas, long currentFrame) {
-        Rect src = new Rect(0, 0,
-                (int)heightFrame, (int)heightFrame);
-        Rect dst = new Rect((int)ArrayX * TEXTURE_SIZE, (int)ArrayY* TEXTURE_SIZE,
+        this.currentFrame = currentFrame;
+        currentFrame = this.currentFrame - startFrame;
+        if(currentFrame >= IMAGE_COLUMN){
+            currentFrame = 0;
+        }
+        Rect src = new Rect((int)(currentFrame*widthFrame + 1), (int)(direction*heightFrame ),
+                (int)((currentFrame+1)*widthFrame), (int)((direction +1)*heightFrame ));
+        Rect dst = new Rect((int)ArrayX * TEXTURE_SIZE - 1, (int)ArrayY* TEXTURE_SIZE - 1,
                 ( ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1)* TEXTURE_SIZE);
-        canvas.drawBitmap(texture, src, dst, paint);
+
+        canvas.drawBitmap(texture,src, dst , paint);
     }
     synchronized public void updateState(){
         if( System.currentTimeMillis() - lastUpdateTime > speed){
@@ -89,6 +96,7 @@ public class Manipulator extends MapElement{
                     pullOut(true);
                     pushItem(item, true);
                     lastUpdateTime =  System.currentTimeMillis();
+                    startFrame = currentFrame;
                 }
             }
 

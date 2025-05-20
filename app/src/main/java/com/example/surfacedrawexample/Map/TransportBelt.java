@@ -17,7 +17,6 @@ public class TransportBelt extends MapElement {
     Bitmap texture ;
     int direction;
     float widthFrame, heightFrame;
-    int ArrayX, ArrayY;
     int ICON_SIZE =  2;
     int IMAGE_COLUMN = 32;
     int IMAGE_ROWS = 40;
@@ -58,7 +57,7 @@ public class TransportBelt extends MapElement {
         this.direction = direction;
         icon = Bitmap.createBitmap(texture, (int)heightFrame/2, (int)widthFrame / 2, (int) widthFrame, (int)heightFrame);
         lastUpdateTime = System.currentTimeMillis();
-        item = new TransportBeltItem[]{null, null, new TransportBeltItem(1, 0, 0, TEXTURE_SIZE)};
+        item = new TransportBeltItem[]{null, null, null};
         n = item.length;
         changeSize(TEXTURE_SIZE);
         tag = "transportItem";
@@ -84,11 +83,11 @@ public class TransportBelt extends MapElement {
         //как определить номер кадра
         Rect src = new Rect((int)(currentFrame*widthFrame + widthFrame / 2), (int)(direction* 2*heightFrame + heightFrame/2),
                 (int)((currentFrame+1)*widthFrame + widthFrame / 2), (int)((direction * 2+1)*heightFrame + heightFrame/2));
-        Rect dst = new Rect((int)ArrayX * TEXTURE_SIZE, (int)ArrayY* TEXTURE_SIZE,
+        Rect dst = new Rect((int)ArrayX * TEXTURE_SIZE -1, (int)ArrayY* TEXTURE_SIZE - 1,
                 ( ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1)* TEXTURE_SIZE);
 
         canvas.drawBitmap(texture,src, dst , paint);
-        int quantityin = 0, newdir = 0;
+        int quantityin = 0, newdir = -1;
         for(int i = 0; i < 4; i++){
             int nx = ArrayX + dx[i];
             int ny = ArrayY + dy[i];
@@ -107,8 +106,9 @@ public class TransportBelt extends MapElement {
                 }
             }
         }
-        if(quantityin == 1){
+        if(quantityin == 1 && newdir != -1){
             direction = newdir;
+            changeSize(TEXTURE_SIZE);
         }
     }
 
@@ -156,14 +156,14 @@ public class TransportBelt extends MapElement {
                 isСycle = false;
             }
 
-            if(el.object.pullItem(it, true)){
+            if(el.object.pullItem(it, true, ArrayX, ArrayY)){
                 return true;
             }
         }
         return false;
     }
     @Override
-    public  boolean pullItem(TransportBeltItem it,boolean isChange){
+    public  boolean pullItem(TransportBeltItem it,boolean isChange, int PosX, int PosY){
         if(item[0] == null){
             if(isChange){
                 item[0] = it;
@@ -174,7 +174,7 @@ public class TransportBelt extends MapElement {
         return false;
     }
     @Override
-    TransportBeltItem getItem(boolean isChange){
+    TransportBeltItem getItem(boolean isChange, int PosX, int PosY){
         for(int i = 0; i < item.length; i++){
             if(item[i] != null){
                 TransportBeltItem ans =item[i];
@@ -187,7 +187,7 @@ public class TransportBelt extends MapElement {
     }
     @Override
     public void changeSize(int ts){
-        int delta = TEXTURE_SIZE - ts;
+        float delta = (float)ts / (float)TEXTURE_SIZE;
         TEXTURE_SIZE = ts;
         xS = TEXTURE_SIZE / 2 + dx2[this.direction] * TEXTURE_SIZE / 2 - (int)(dx2[this.direction] * TEXTURE_SIZE  / 6);
         yS = TEXTURE_SIZE / 2 + dy2[this.direction] * TEXTURE_SIZE / 2- (int)(dy2[this.direction] * TEXTURE_SIZE   / 6);
@@ -196,10 +196,14 @@ public class TransportBelt extends MapElement {
         for(TransportBeltItem el : item){
             if(el != null){
                 el.TEXTURE_SIZE = ts;
-                el.xs -= ArrayX * delta;
-                el.ys -= ArrayY * delta;
-                el.xt -= ArrayX * delta;
-                el.yt -= ArrayY * delta;
+               // el.x -= ArrayX * delta;
+              //  el.y -= ArrayY * delta;
+
+                el.xs =  Math.round(delta * el.xs );
+                el.ys =  Math.round(delta * el.ys ) ;
+                el.xt =  Math.round(delta * el.xt ) ;
+                el.yt =  Math.round(delta * el.yt ) ;
+
             }
         }
     }

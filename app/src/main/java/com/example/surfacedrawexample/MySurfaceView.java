@@ -1,8 +1,14 @@
 package com.example.surfacedrawexample;
 
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
+
+import static com.example.surfacedrawexample.Map.ArrayId.getBackGroundId;
+
+import static com.example.surfacedrawexample.Map.ArrayId.getOreId;
 import static com.example.surfacedrawexample.Map.MapArray.map;
+import static com.example.surfacedrawexample.Map.MapArray.mapBackGround;
 import static com.example.surfacedrawexample.Map.MapArray.mapHologram;
+import static com.example.surfacedrawexample.Map.MapArray.mapOre;
 
 
 import android.content.Context;
@@ -41,7 +47,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     long currentFrame = 0;
     ArrayList<Sprite> sprites = new ArrayList<>();
     Sprite character;
-    int minSize = 20;
+    int minSize = 30;
     int offsetCanvas = 0;
     public float translateX = 0;
     public float translateY = 0;
@@ -80,7 +86,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         holder = getHolder();
         holder.addCallback(this);//"активируем" интерфейс SurfaceHolder.Callback
         paint = new Paint();
-        paint.setARGB(100, 0, 0, 0);
+        paint.setARGB(255, 0, 0, 0);
         x = 400;
         y = 1100;
         resources = getResources();
@@ -108,20 +114,27 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
        canvas.translate(translateX , translateY);
         character.x = player.x * TEXTURE_SIZE;
         character.y = player.y * TEXTURE_SIZE;
-        character.draw(canvas);
-        
+
+     
         int xPlayerCell = (int)player.x;
         int yPlayerCell = (int)player.y;
         renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 2;
-        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE +2;
+        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE + 2;
         int startI = xPlayerCell - renderingCellX;
         int topI = xPlayerCell + renderingCellX;
         int startJ = yPlayerCell - renderingCellY;
         int topJ = yPlayerCell + renderingCellY;
+
         for(int layer = 0; layer < 5; layer++) {
             for (int i = Math.max(0, startI); i < Math.min(map.length, topI); i++) {
                 for (int j = Math.max(0, startJ); j < Math.min(map[i].length, topJ); j++) {
                     switch (layer) {
+                        case 1:
+                            //drawBackGround(canvas, i, j);
+                            if(mapOre[i][j] != 0){
+                                drawOre(canvas, i, j);
+                            }
+                            break;
                         case 2:
                             if (map[i][j] != null) {
                                 map[i][j].object.draw(canvas, currentFrame);
@@ -135,11 +148,16 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                                 map[i][j].object.drawItems(canvas);
                             }
                             break;
+                        case 4:
+                            if(map[i][j] != null)
+                                map[i][j].object.drawUpItem(canvas, currentFrame);
+
                     }
 
                 }
             }
         }
+        character.draw(canvas);
         currentFrame++;
         player.draw(canvas);
         TEXTURE_SIZE += dts;
@@ -152,6 +170,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
         }
+        changeSizeBackGround(TEXTURE_SIZE);
         dts = 0;
     }
     public void changeDeltaSize(int dts){
@@ -197,5 +216,24 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                 throw new RuntimeException(e);
             }
         }
+    }
+    public  void changeSizeBackGround(int ts){
+        TEXTURE_SIZE = ts;
+    }
+    public  void drawBackGround(Canvas canvas, int posX, int posY){
+        int heightFrame = getBackGroundId(0).getHeight();
+            Rect src = new Rect(0, 0,
+                    (int)heightFrame, (int)heightFrame);
+            Rect dst = new Rect((int)posX * TEXTURE_SIZE - 1, (int)posY* TEXTURE_SIZE - 1,
+                    ( posX + 2) * TEXTURE_SIZE, (posY+ 2)* TEXTURE_SIZE);
+            canvas.drawBitmap(getBackGroundId(mapBackGround[posX][posY]), src, dst, paint);
+    }
+    public void drawOre(Canvas canvas, int posX, int posY){
+        int heightFrame = getOreId(mapOre[posX][posY]).getHeight();
+        Rect src = new Rect(0, 0,
+                (int)heightFrame, (int)heightFrame);
+        Rect dst = new Rect((int)posX * TEXTURE_SIZE - 1, (int)posY* TEXTURE_SIZE - 1,
+                ( posX + 1) * TEXTURE_SIZE, (posY+ 1)* TEXTURE_SIZE);
+        canvas.drawBitmap(getOreId(mapOre[posX][posY]), src, dst, paint);
     }
 }

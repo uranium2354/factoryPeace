@@ -48,16 +48,25 @@ public class Storage  {
     Button buttonRotate;
     Button buttonAccept;
     Button buttonDestroy;
+
    public Storage(int numberOfItemRow, MainActivity main, TableLayout tableLayout, ConstraintLayout constraintLayout, Resources resources, Player player){
         idCell.add(1);
         idCell.add(2);
-        idCell.add(2);
-        idCell.add(2);
+        idCell.add(3);
+        idCell.add(8);
         drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
+        drawables.add(resources.getDrawable(R.drawable.storage_manipulator));
+        drawables.add(resources.getDrawable(R.drawable.storage_stove));
+        drawables.add(resources.getDrawable(R.drawable.storage_crossroad));
         buttonRotate = constraintLayout.findViewById(R.id.rotateButton);
+       idCell.add(9);
+       idCell.add(9);
+       idCell.add(9);
+       idCell.add(9);
+       drawables.add(resources.getDrawable(R.drawable.storage_boer));
+       drawables.add(resources.getDrawable(R.drawable.storage_boer));
+       drawables.add(resources.getDrawable(R.drawable.storage_boer));
+       drawables.add(resources.getDrawable(R.drawable.storage_boer));
 
         buttonRotate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +80,16 @@ public class Storage  {
             @Override
             public void onClick(View v) {
                 player.setIsPlace();
+                updateImage();
             }
+
         });
         buttonDestroy = constraintLayout.findViewById(R.id.destroyButton);
         buttonDestroy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 player.setIsDestroy();
+                updateImage();
             }
         });
         this.resources = resources;
@@ -86,6 +98,16 @@ public class Storage  {
         this.numberOfItemRow = numberOfItemRow;
         this.player = player;
    }
+    private void  updateImage(){
+        if(player.isPlace)
+            buttonAccept.setBackground(resources.getDrawable(R.drawable.gui_accept_a));
+        else
+            buttonAccept.setBackground(resources.getDrawable(R.drawable.gui_accept));
+        if(player.isDestroy)
+            buttonDestroy.setBackground(resources.getDrawable(R.drawable.gui_destroy_a));
+        else
+            buttonDestroy.setBackground(resources.getDrawable(R.drawable.gui_destroy));
+    }
    public void addRowStorage(int row){
        int pc = row * numberOfItemRow;
        Drawable[] lD = new Drawable[numberOfItemRow];

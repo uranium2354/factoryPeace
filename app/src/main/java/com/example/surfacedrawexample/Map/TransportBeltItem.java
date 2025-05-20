@@ -20,6 +20,8 @@ public class TransportBeltItem {
     public TransportBeltItem(int id, int x, int y, int TEXTURE_SIZE){
         this.x = x;
         this.y = y;
+        this.xt = x;
+        this.yt = y;
         this.id = id;
         lastDrawTime = System.currentTimeMillis();
         if(getImageId(id) != null){
