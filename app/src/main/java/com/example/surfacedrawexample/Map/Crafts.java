@@ -3,7 +3,7 @@ package com.example.surfacedrawexample.Map;
 public  class Crafts {
     public static Craft[]  crafts = new Craft[2];
     public Crafts(){
-        crafts[0] = new Craft(new int[]{3}, new Item(5), new Item(4), 500);
+        crafts[0] = new Craft(new int[]{3}, new Item(5), new Item(1), 500);
         crafts[1] = new Craft(new int[]{3}, new Item(1), new Item(2), 500);
     }
     public static Item getCraftIng(int idCraft, int iding){

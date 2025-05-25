@@ -1,9 +1,12 @@
 package com.example.surfacedrawexample;
 
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
+import static com.example.surfacedrawexample.Map.ArrayId.addNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
+import static com.example.surfacedrawexample.Map.ArrayId.getNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.getScaleId;
 import static com.example.surfacedrawexample.Map.ArrayId.getStaticImage;
+import static com.example.surfacedrawexample.Map.ArrayId.takeNumItemId;
 import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
 import static com.example.surfacedrawexample.Map.MapArray.map;
 import static com.example.surfacedrawexample.Map.MapArray.mapHologram;
@@ -141,33 +144,45 @@ public class Player {
             long delta = System.currentTimeMillis() - lastUpdateTime;
             if(!orderHologram.isEmpty() && delta > timePlace){
                 lastUpdateTime = System.currentTimeMillis();
-                Hologram hologramPlace = orderHologram.get(0);
-                int posMapX = hologramPlace.x;
-                int posMapY = hologramPlace.y;
-                if(map[posMapX][posMapY] == null){
-                    int rotationMap = hologramPlace.rotation;
-                    int idMap = hologramPlace.id;
-                    Point scaleMap= getScaleId(hologramPlace.id);
-                    MapElement placeMap = new MapElement(idMap, dR[rotationMap], posMapX, posMapY,false, getClassId(idMap)).object;
-                    for(int i = 0 ; i < scaleMap.x; i++){
-                        for(int j= 0 ; j < scaleMap.y; j++){
-                            if(posMapX + i < mapHologram.length && posMapY + j < mapHologram[0].length){
-                                map[posMapX + i][posMapY + j] = placeMap;
+
+                int k = 0;
+                while (k < orderHologram.size() &&  getNumItemId(orderHologram.get(k).id) <= 0){
+                    k++;
+                }
+                if(k < orderHologram.size() ) {
+                    Hologram hologramPlace = orderHologram.get(k);
+
+                    int posMapX = hologramPlace.x;
+                    int posMapY = hologramPlace.y;
+                    if (map[posMapX][posMapY] == null) {
+
+
+                        takeNumItemId(hologramPlace.id);
+                        int rotationMap = hologramPlace.rotation;
+                        int idMap = hologramPlace.id;
+                        Point scaleMap = getScaleId(hologramPlace.id);
+                        MapElement placeMap = new MapElement(idMap, dR[rotationMap], posMapX, posMapY, false, getClassId(idMap)).object;
+                        for (int i = 0; i < scaleMap.x; i++) {
+                            for (int j = 0; j < scaleMap.y; j++) {
+                                if (posMapX + i < mapHologram.length && posMapY + j < mapHologram[0].length) {
+                                    map[posMapX + i][posMapY + j] = placeMap;
+
+                                }
 
                             }
+                        }
+                        map[posMapX][posMapY].changeSize(TEXTURE_SIZE);
+                        for (int i = 0; i < scaleMap.x; i++) {
+                            for (int j = 0; j < scaleMap.y; j++) {
+                                if (posMapX + i < mapHologram.length && posMapY + j < mapHologram[0].length)
+                                    mapHologram[posMapX + i][posMapY + j] = null;
+                            }
+                        }
+                        if(!orderHologram.isEmpty())
+                            orderHologram.remove(k);
+                    }
 
-                        }
-                    }
-                    map[posMapX][posMapY].changeSize(TEXTURE_SIZE);
-                    for(int i = 0 ; i < scaleMap.x; i++){
-                        for(int j= 0 ; j < scaleMap.y; j++){
-                            if(posMapX + i < mapHologram.length && posMapY + j < mapHologram[0].length)
-                                mapHologram[posMapX + i][posMapY + j] = null;
-                        }
-                    }
                 }
-                if(!orderHologram.isEmpty())
-                 orderHologram.remove(0);
             }
         }
         if(isDestroy){
@@ -180,7 +195,7 @@ public class Player {
               //  textView.setText(Integer.toString(posMapX));
                 if(map[posMapX][posMapY] != null) {
                     Point scaleMap;
-
+                    addNumItemId(map[posMapX][posMapY].id);
                     posMapX = map[posMapX][posMapY].ArrayX;
                     posMapY = map[posMapX][posMapY].ArrayY;
                     scaleMap = getScaleId(map[posMapX][posMapY].id);
@@ -190,7 +205,6 @@ public class Player {
                                 map[posMapX + i][posMapY + j] = null;
                         }
                     }
-
                 }
                 orderDestroy.remove(0);
             }

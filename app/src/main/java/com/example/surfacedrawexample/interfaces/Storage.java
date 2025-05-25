@@ -1,6 +1,8 @@
 package com.example.surfacedrawexample.interfaces;
 
+import static com.example.surfacedrawexample.MainActivity.buttonsStorage;
 import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
+import static com.example.surfacedrawexample.Map.ArrayId.getDrawableId;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -27,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Storage  {
-    List<Integer> idCell= new ArrayList<>();
-    List<Drawable> drawables= new ArrayList<>();
+    static List<Integer> idCell= new ArrayList<>();
     TableLayout tableLayout;
    Player player;
    public View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -41,6 +42,14 @@ public class Storage  {
             }
         }
     };
+   public static void setTextButtonId(int id, String text){
+       for (Button el : buttonsStorage ){
+           int idNumIdCell = el.getId();
+           if(idCell.get(idNumIdCell - 1000) == id){
+               el.setText(text);
+           }
+       }
+   }
 
    int numberOfItemRow = 4;
     MainActivity main;
@@ -54,19 +63,11 @@ public class Storage  {
         idCell.add(2);
         idCell.add(3);
         idCell.add(8);
-        drawables.add(resources.getDrawable(R.drawable.storage_transportbelt));
-        drawables.add(resources.getDrawable(R.drawable.storage_manipulator));
-        drawables.add(resources.getDrawable(R.drawable.storage_stove));
-        drawables.add(resources.getDrawable(R.drawable.storage_crossroad));
         buttonRotate = constraintLayout.findViewById(R.id.rotateButton);
        idCell.add(9);
-       idCell.add(9);
-       idCell.add(9);
-       idCell.add(9);
-       drawables.add(resources.getDrawable(R.drawable.storage_boer));
-       drawables.add(resources.getDrawable(R.drawable.storage_boer));
-       drawables.add(resources.getDrawable(R.drawable.storage_boer));
-       drawables.add(resources.getDrawable(R.drawable.storage_boer));
+       idCell.add(10);
+       idCell.add(10);
+       idCell.add(10);
 
         buttonRotate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +113,7 @@ public class Storage  {
        int pc = row * numberOfItemRow;
        Drawable[] lD = new Drawable[numberOfItemRow];
        for(int i = pc; i < pc + numberOfItemRow; i++){
-           lD[i - pc] = (drawables.get(i));
+           lD[i - pc] = getDrawableId(idCell.get(i));
        }
        main.addRow(lD, tableLayout);
    }

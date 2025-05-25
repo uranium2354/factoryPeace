@@ -32,6 +32,18 @@ public class Hologram {
         paint.setARGB(100 / getScaleId(id).x / getScaleId(id).y, 0, 0, 0);
         this.orderIndex = orderIndex;
     }
+    public Hologram(Hologram el){
+        this.id = el.id;
+        this.rotation = el.rotation;
+        this.image = el.image;
+        this.x = el.x;
+        this.y = el.y;
+        widthFrame = el.image.getWidth();
+        heightFrame = el.image.getHeight();
+        paint = new Paint();
+        paint.setARGB(100 / getScaleId(id).x / getScaleId(id).y, 0, 0, 0);
+        this.orderIndex = el.orderIndex;
+    }
     public void draw(Canvas canvas){
         Rect src = new Rect(0, 0, widthFrame,heightFrame );
         Rect dst = new Rect((int)x * TEXTURE_SIZE, (int)y* TEXTURE_SIZE, ( x + mapScaleX) * TEXTURE_SIZE, (y + mapScaleY)* TEXTURE_SIZE);

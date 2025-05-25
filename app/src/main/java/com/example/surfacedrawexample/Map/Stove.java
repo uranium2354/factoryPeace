@@ -60,7 +60,7 @@ public class Stove extends MapElement{
 
     //private void calculete
     @Override
-    public void draw(Canvas canvas, long currentF){
+    public void drawUpItem(Canvas canvas, long currentF){
         currentF %= IMAGE_COLUMN;
         int k = 0;
         if(!isСooking){
@@ -83,7 +83,7 @@ public class Stove extends MapElement{
                 numfuel--;
                 numOut++;
                 if(numOut > 0 && itemOut == null)
-                    itemOut = new TransportBeltItem(getCraftIng(id, itemIn.id).id, 0, 0, TEXTURE_SIZE);
+                    itemOut = new TransportBeltItem(getCraftIng(id, itemIn.id).id, ArrayX + 1, ArrayY + 1, TEXTURE_SIZE);
                 isСooking = true;
                 if(numIn == 0)
                     itemIn = null;
@@ -110,7 +110,7 @@ public class Stove extends MapElement{
             if(isChange){
                 itemIn = it;
                 numIn++;
-                itemOut = new TransportBeltItem(getCraftIng(id, it.id).id, 0, 0, TEXTURE_SIZE);
+                itemOut = new TransportBeltItem(getCraftIng(id, it.id).id, ArrayX + 1, ArrayY + 1, TEXTURE_SIZE);
             }
             return true;
         }
@@ -130,7 +130,7 @@ public class Stove extends MapElement{
                numOut--;
            }
            int itId = itemOut.id;
-           return new TransportBeltItem(itId , 0, 0, TEXTURE_SIZE);
+           return new TransportBeltItem(itId , (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE);
        }
         return null;
     }

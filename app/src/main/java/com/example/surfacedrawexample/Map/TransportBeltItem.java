@@ -22,7 +22,10 @@ public class TransportBeltItem {
         this.y = y;
         this.xt = x;
         this.yt = y;
+        this.xs = x;
+        this.ys = y;
         this.id = id;
+        timeMoving = 0;
         lastDrawTime = System.currentTimeMillis();
         if(getImageId(id) != null){
             icon = getImageId(id);
