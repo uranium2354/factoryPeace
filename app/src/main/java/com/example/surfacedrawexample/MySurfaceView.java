@@ -77,7 +77,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         character = new Sprite(image, this, x, y);
         t = new TransportBeltItem(1, 0, 0, 128);
         t.move(0, 1500, 1500, 0, 10000);
-
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
 
     }
     public MySurfaceView (Context context, AttributeSet attributeSet) {
@@ -91,12 +92,14 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         y = 1100;
         resources = getResources();
         image = BitmapFactory.decodeResource(resources, R.drawable.sprites);
-        new ArrayId(this, resources);
+
 
         speed = 20;//коэффициент скорости
         character = new Sprite(image, this, x, y);
         t = new TransportBeltItem(1, 0, 0, 128);
         t.move(0, 1500, 1500, 0, 10000);
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
 
     @Override
@@ -124,32 +127,38 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         int topI = xPlayerCell + renderingCellX;
         int startJ = yPlayerCell - renderingCellY;
         int topJ = yPlayerCell + renderingCellY;
-
+        for (int i = Math.max(0, startI - 1); i < Math.min(map.length, topI + 2); i++) {
+            for (int j = Math.max(0, startJ - 1); j < Math.min(map[i].length, topJ + 2); j++) {
+                if(i % 3 == 0 && j % 3 == 0)
+                    drawBackGround(canvas, i, j);
+            }
+        }
         for(int layer = 0; layer < 5; layer++) {
             for (int i = Math.max(0, startI); i < Math.min(map.length, topI); i++) {
                 for (int j = Math.max(0, startJ); j < Math.min(map[i].length, topJ); j++) {
                     switch (layer) {
                         case 1:
-                            //drawBackGround(canvas, i, j);
-                            if(mapOre[i][j] != 0){
+
+                            if(mapOre[i][j] != null){
                                 drawOre(canvas, i, j);
                             }
+
                             break;
                         case 2:
-                            if (map[i][j] != null) {
+                            if (map[i][j] != null && map[i][j].ArrayX == i && map[i][j].ArrayY == j) {
                                 map[i][j].object.draw(canvas, currentFrame);
                             }
-                            if(mapHologram[i][j] != null){
+                            if(mapHologram[i][j] != null  && mapHologram[i][j].x == i && mapHologram[i][j].y == j){
                                 mapHologram[i][j].draw(canvas);
                             }
                             break;
                         case 3:
-                            if(map[i][j] != null){
+                            if(map[i][j] != null && map[i][j].ArrayX == i && map[i][j].ArrayY == j){
                                 map[i][j].object.drawItems(canvas);
                             }
                             break;
                         case 4:
-                            if(map[i][j] != null)
+                            if(map[i][j] != null && map[i][j].ArrayX == i && map[i][j].ArrayY == j)
                                 map[i][j].object.drawUpItem(canvas, currentFrame);
 
                     }
@@ -157,7 +166,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
         }
-        character.draw(canvas);
+       // character.draw(canvas);
         currentFrame++;
         player.draw(canvas);
         TEXTURE_SIZE += dts;
@@ -225,15 +234,15 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
             Rect src = new Rect(0, 0,
                     (int)heightFrame, (int)heightFrame);
             Rect dst = new Rect((int)posX * TEXTURE_SIZE - 1, (int)posY* TEXTURE_SIZE - 1,
-                    ( posX + 2) * TEXTURE_SIZE, (posY+ 2)* TEXTURE_SIZE);
+                    ( posX + 3) * TEXTURE_SIZE, (posY+ 3)* TEXTURE_SIZE);
             canvas.drawBitmap(getBackGroundId(mapBackGround[posX][posY]), src, dst, paint);
     }
     public void drawOre(Canvas canvas, int posX, int posY){
-        int heightFrame = getOreId(mapOre[posX][posY]).getHeight();
+        int heightFrame = getOreId(mapOre[posX][posY].id, mapOre[posX][posY].num).getHeight();
         Rect src = new Rect(0, 0,
                 (int)heightFrame, (int)heightFrame);
         Rect dst = new Rect((int)posX * TEXTURE_SIZE - 1, (int)posY* TEXTURE_SIZE - 1,
                 ( posX + 1) * TEXTURE_SIZE, (posY+ 1)* TEXTURE_SIZE);
-        canvas.drawBitmap(getOreId(mapOre[posX][posY]), src, dst, paint);
+        canvas.drawBitmap(getOreId(mapOre[posX][posY].id, mapOre[posX][posY].num), src, dst, paint);
     }
 }

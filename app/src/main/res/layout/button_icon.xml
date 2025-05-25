@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.Button xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:text="0"
+
     android:layout_width="48dp"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:width="48dp"
+    android:height="48dp"
+    app:layout_constraintWidth_max="48dp"
+    app:layout_constraintHeight_max="48dp"
+    android:gravity="right|bottom">
 
 </android.widget.Button>

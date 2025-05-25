@@ -34,6 +34,8 @@ public class TransportBeltItem {
 
         this.TEXTURE_SIZE = TEXTURE_SIZE;
         paint = new Paint();
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
     public boolean isMove(){
             return (System.currentTimeMillis() - lastDrawTime > timeMoving - 20);

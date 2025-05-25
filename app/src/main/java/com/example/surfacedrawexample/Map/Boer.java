@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 import static com.example.surfacedrawexample.Map.MapArray.mapOre;
 
@@ -23,7 +24,7 @@ public class Boer extends MapElement{
 
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
-    int speed = 500; //TODO нужна чтобы сгладить неровности при движении item
+    int speed = 1000; //TODO нужна чтобы сгладить неровности при движении item
     TransportBeltItem[] item;
     long lastUpdateTime = 0;
     int xS, yS, xT, yT;
@@ -42,7 +43,7 @@ public class Boer extends MapElement{
         constructor(id, direction, mySurfaceView, resources, x, y);
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_boer);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -53,6 +54,8 @@ public class Boer extends MapElement{
         lastUpdateTime = System.currentTimeMillis();
         changeSize(TEXTURE_SIZE);
         tag = "Boer";
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
 
     //private void calculete
@@ -80,8 +83,8 @@ public class Boer extends MapElement{
             int ny = ArrayY+ dyOre[oreNum];
             oreNum++;
             oreNum %= 4;
-            if(mapOre[nx][ny] > 0){
-                pushItem(new TransportBeltItem(mapOre[nx][ny], (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE));
+            if(mapOre[nx][ny] != null){
+                pushItem(new TransportBeltItem(mapOre[nx][ny].id, (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE));
             }
         }
     }

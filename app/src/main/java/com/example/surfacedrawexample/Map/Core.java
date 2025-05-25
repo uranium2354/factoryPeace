@@ -1,6 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
 import static com.example.surfacedrawexample.Map.ArrayId.addNumItemId;
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
@@ -31,7 +32,7 @@ public class Core extends MapElement{
         constructor(id, direction, mySurfaceView, resources, x, y);
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_core);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -41,6 +42,8 @@ public class Core extends MapElement{
         icon = Bitmap.createBitmap(texture, 0, 0, (int) widthFrame, (int)heightFrame);
         changeSize(TEXTURE_SIZE);
         tag = "transportItem";
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
     @Override
     public void draw(Canvas canvas, long currentF){

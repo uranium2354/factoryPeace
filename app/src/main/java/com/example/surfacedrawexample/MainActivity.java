@@ -2,7 +2,9 @@ package com.example.surfacedrawexample;
 
 
 
+import static com.example.surfacedrawexample.Map.ArrayId.getDrawableId;
 import static com.example.surfacedrawexample.Map.ArrayId.updateButtons;
+import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -14,17 +16,16 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Button;
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.example.surfacedrawexample.Map.ArrayId;
+import com.example.surfacedrawexample.Map.Craft;
 import com.example.surfacedrawexample.Map.Crafts;
+import com.example.surfacedrawexample.Map.Item;
 import com.example.surfacedrawexample.Map.MapArray;
+import com.example.surfacedrawexample.interfaces.CraftMenu;
 import com.example.surfacedrawexample.interfaces.OnSwipeTouchListener;
 import com.example.surfacedrawexample.interfaces.Storage;
 
@@ -35,15 +36,19 @@ public class MainActivity extends AppCompatActivity   {
     Button button;
     TableLayout storage;
     Storage storageClass;
+    CraftMenu craftMenuCl;
+    TextView textView;
+    private MusicPlayer musicPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_main);
         ConstraintLayout mainLayout = findViewById(R.id.main);
-        TextView textView = findViewById(R.id.text2);
+        textView = findViewById(R.id.text2);
         super.onCreate(savedInstanceState);
         Crafts crafts = new Crafts();
         MySurfaceView mySurfaceView = (MySurfaceView) findViewById(R.id.mySurfaceView);
+        new ArrayId(mySurfaceView, getResources());
         Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
         mySurfaceView.player = player;
         MapArray m = new MapArray(getResources(), mySurfaceView, player);
@@ -51,17 +56,66 @@ public class MainActivity extends AppCompatActivity   {
         logicThread.setRunning(true);
         logicThread.start();
         TableLayout tableLayout = findViewById(R.id.storage);
+        TableLayout craftMenu = findViewById(R.id.craftsMenu);
         //setContentView(R.layout.activity_main);
         button = new Button(this);
         storage = findViewById(R.id.storage);
+         craftMenuCl = new CraftMenu(player);
+         Save save = new Save(this);
 
         mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {
 
         });
-        storageClass = new Storage(4, this, tableLayout,mainLayout, getResources(), player);
+        storageClass = new Storage(4, this, tableLayout,mainLayout,findViewById(R.id.scrollMenu), getResources(), player);
         storageClass.addRowStorage(0);
         storageClass.addRowStorage(1);
+        player.storage = storageClass;
         updateButtons();
+        for(Craft craft : craftsItem){
+            if(craft != null)
+                addRowCraft(craft, craftMenu);
+        }
+        save.readSave();
+        Button saveButton;
+        saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save.recordSave();
+            }
+        });
+
+        List<Integer> sounds = new ArrayList<>();
+        sounds.add(R.raw.sound1);
+        sounds.add(R.raw.sound2);
+        sounds.add(R.raw.sound3);
+        sounds.add(R.raw.sound4);
+        sounds.add(R.raw.sound5);
+        sounds.add(R.raw.sound6);
+        sounds.add(R.raw.sound7);
+        sounds.add(R.raw.sound8);
+        sounds.add(R.raw.sound9);
+        musicPlayer = new MusicPlayer(this, sounds);
+        musicPlayer.playRandom();
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        musicPlayer.pause();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!musicPlayer.isPlaying()) {
+            musicPlayer.resume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        musicPlayer.releasePlayer();
     }
     public static List<Button> buttonsStorage = new ArrayList<>();
 
@@ -86,5 +140,54 @@ public class MainActivity extends AppCompatActivity   {
             tableLayout.addView(tr);
         }
         rowNumber++;
+    }
+    public void addRowCraft(Craft craft, TableLayout tableLayout) {//TODO добавление ряда в крафт
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //Inflater inflater1= (Inflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        TableRow tr = (TableRow) inflater.inflate(R.layout.craft_row, null);
+        for(Item el: craft.ingredients){
+            Button bt = (Button) inflater.inflate(R.layout.button_icon, null, false);
+            bt.setText(Integer.toString(el.num));
+            bt.setLayoutParams(new TableRow.LayoutParams(dpToPx(48), dpToPx(48)));
+           bt.setBackground(getDrawableId(el.id));
+            tr.addView(bt);
+            bt.setOnClickListener(craftMenuCl.onClickListener);
+        }
+
+        Button btIn  = (Button) inflater.inflate(R.layout.button_icon, null);
+        btIn.setOnClickListener(craftMenuCl.onClickListener);
+        btIn.setText("");
+        btIn.setBackground(getResources().getDrawable(R.drawable.gui_rotation));
+        btIn.setLayoutParams(new TableRow.LayoutParams(dpToPx(48), dpToPx(48)));
+        tr.addView(btIn);
+        Button btCraft  = (Button) inflater.inflate(R.layout.button_icon, null);
+        btCraft .setOnClickListener(craftMenuCl.onClickListener);
+        btCraft .setText("");
+        btCraft .setBackground(getDrawableId(craft.idCraft[0]));
+        btCraft .setLayoutParams(new TableRow.LayoutParams(dpToPx(48), dpToPx(48)));
+        tr.addView(btCraft );
+        Button btOut  = (Button) inflater.inflate(R.layout.button_icon, null);
+        btOut.setText("");
+        btOut.setBackground(getResources().getDrawable(R.drawable.gui_rotation));
+        btOut.setLayoutParams(new TableRow.LayoutParams(dpToPx(48), dpToPx(48)));
+        btOut.setOnClickListener(craftMenuCl.onClickListener);
+        tr.addView(btOut);
+
+        Button bt2  = (Button) inflater.inflate(R.layout.button_icon, null);
+        bt2.setText(Integer.toString(craft.product.num));
+        bt2.setLayoutParams(new TableRow.LayoutParams(dpToPx(48), dpToPx(48)));
+        bt2.setBackground(getDrawableId(craft.product.id));
+        bt2.setOnClickListener(craftMenuCl.onClickListener);
+        tr.addView(bt2);
+        if(tr.getParent() != null) {
+            ((ViewGroup)tr.getParent()).removeView(tr);
+        }
+        craftMenuCl.tableRows[tableLayout.getChildCount()] = tr;
+       // tr.setOnClickListener(craftMenuCl.onClickListener);
+        tableLayout.addView(tr);
+    }
+    public int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getImageId;
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
@@ -44,11 +46,12 @@ public class TransportBelt extends MapElement {
     public TransportBelt(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
 
         super(id, direction,x, y, true,  TransportBelt.class);
+        this.texture = texture;
         object = this;
         constructor(id, direction, mySurfaceView, resources, x, y);
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_transportbelt);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -61,6 +64,8 @@ public class TransportBelt extends MapElement {
         n = item.length;
         changeSize(TEXTURE_SIZE);
         tag = "transportItem";
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
 
     //private void calculete
@@ -204,6 +209,36 @@ public class TransportBelt extends MapElement {
                 el.xt =  Math.round(delta * el.xt ) ;
                 el.yt =  Math.round(delta * el.yt ) ;
 
+            }
+        }
+    }
+
+    @Override
+    public String saveString() {
+        String ans = "";
+        for(int i = 0 ; i < item.length; i++){
+            if(item[i] == null){
+                ans += "0 ";
+            }
+            else {
+                ans += Integer.toString(item[i].id) + " ";
+            }
+        }
+        return ans;
+    }
+
+    @Override
+    public void readString(String s) {
+        if(s == null){
+            return;
+        }
+        String[] parts = s.split(" ");
+        if(parts.length == item.length){
+            for(int i = 0 ; i < item.length; i++){
+                if(parts[i] != "0" && Integer.parseInt(parts[i]) != 0){
+                    item[i] = new TransportBeltItem(Integer.parseInt(parts[i]), 0, 0, TEXTURE_SIZE);
+                    moveItem(i, i);
+                }
             }
         }
     }

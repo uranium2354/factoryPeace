@@ -3,6 +3,7 @@ package com.example.surfacedrawexample.Map;
 import static com.example.surfacedrawexample.Map.ArrayId.backGroundImage;
 import static com.example.surfacedrawexample.Map.ArrayId.getBackGroundId;
 import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
+import static com.example.surfacedrawexample.Map.ArrayId.ore;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -20,7 +21,7 @@ public class MapArray {
     public static MapElement[][]  map = new MapElement[100][100];
     public static Hologram[][] mapHologram = new Hologram[100][100];
     public static int[][] mapBackGround = new int[100][100];
-    public static int[][] mapOre = new int[100][100];
+    public static Item[][] mapOre = new Item[100][100];
     static MySurfaceView mySurfaceViewStatic;
     static Resources resourcesStatic;
    // MapElement c = TransportBelt;
@@ -31,26 +32,40 @@ public class MapArray {
         this.playerStatic = player;
         mySurfaceViewStatic  = mySurfaceView;
         resourcesStatic = resources;
-        map[5][5] = new MapElement(1, 0, 5, 5, false, getClassId(1)).object;
-        map[6][5] = new MapElement(1, 0, 6, 5, false, getClassId(1)).object;
-        map[4][5] = new MapElement(1, 0, 4, 5, false, getClassId(1)).object;
-        map[3][5] = new MapElement(1, 0, 3, 5, false, getClassId(1)).object;
-        map[7][5] = new MapElement(1, 3, 7, 5, false, getClassId(1)).object;
-        map[7][6] = new MapElement(1, 3, 7, 6, false, getClassId(1)).object;
-        map[7][7] = new MapElement(1, 7, 7, 7, false, getClassId(1)).object;
-        map[6][7] = new MapElement(1, 1, 6, 7, false, getClassId(1)).object;
-        map[5][7] = new MapElement(1, 1, 5, 7, false, getClassId(1)).object;
-        map[4][7] = new MapElement(1, 1, 4, 7, false, getClassId(1)).object;
-        map[3][7] = new MapElement(1, 4, 3, 7, false, getClassId(1)).object;
-        map[3][6] = new MapElement(1, 2, 3, 6, false, getClassId(1)).object;
-        map[5][6] = new MapElement(1, 2, 5, 6, false, getClassId(1)).object;
-        map[5][4] = new MapElement(2, 2, 5, 4, false, getClassId(2)).object;
-        map[5][3] = new MapElement(1, 0, 5, 3, false, getClassId(1)).object;
-        map[6][3] = new MapElement(1, 0, 6, 3, false, getClassId(1)).object;
-        map[7][3] = new MapElement(1, 11, 7, 3, false, getClassId(1)).object;
-        map[7][4] = new MapElement(1, 3, 7, 4, false, getClassId(1)).object;
-        mapOre[8][8] = 5;
-        mapOre[10][15] = 7;
+        mapOre[8][8] = new Item(5);
+        mapOre[8][7] =  new Item(5);
+        mapOre[9][8] =  new Item(5);
+        mapOre[9][9] =  new Item(5);
+        mapOre[10][8] =  new Item(5);
+
+        mapOre[10][15] =  new Item(7);
+        mapOre[10][16] =  new Item(7);
+        mapOre[11][15] =  new Item(7);
+        mapOre[9][15] =  new Item(7);
+        mapOre[10][17] =  new Item(7);
+        mapOre[12][17] =  new Item(7);
+
+        mapOre[20][30] =  new Item(14);
+        mapOre[21][30] =  new Item(14);
+        mapOre[22][31] =  new Item(14);
+        mapOre[20][32] =  new Item(14);
+        mapOre[21][31] =  new Item(14);
+        mapOre[23][30] =  new Item(14);
+
+        mapOre[40][10] =  new Item(16);
+        mapOre[40][11] =  new Item(16);
+        mapOre[40][15] =  new Item(16);
+        mapOre[39][60] =  new Item(16);
+        mapOre[39][11] =  new Item(16);
+        mapOre[40][12] =  new Item(16);
+        for(int i = 0; i < mapOre.length; i++){
+            for(int j = 0 ; j < mapOre[i].length; j++){
+                if(mapOre[i][j] != null){
+                    int random = new Random().nextInt(0, ore.get(mapOre[i][j].id).length) ;
+                    mapOre[i][j].num = random;
+                }
+            }
+        }
         paint = new Paint();
         generateBackGround(resources);
     }

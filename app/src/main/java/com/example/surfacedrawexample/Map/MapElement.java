@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.mySurfaceViewStatic;
 import static com.example.surfacedrawexample.Map.MapArray.resourcesStatic;
 
@@ -17,7 +18,7 @@ public class MapElement {
     public int ArrayX, ArrayY;
     public int id;
     public int TEXTURE_SIZE= 128;
-    int rotation = 0;
+    public int rotation = 0;
     String tag = "none";
     int mapScaleX = 1;
     int mapScaleY = 1;
@@ -64,5 +65,7 @@ public class MapElement {
     public void drawItems(Canvas canvas){}
     public void drawUpItem(Canvas canvas, long currentF){}
     public void changeSize(int ts){};
+    public String saveString(){return "";}
+    public void readString(String s){}
     synchronized public void updateState(){}
 }

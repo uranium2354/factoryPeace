@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
@@ -39,7 +40,7 @@ public class Manipulator extends MapElement{
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y) {
         this.mySurfaceView = mySurfaceView;
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_manipulator);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -49,7 +50,8 @@ public class Manipulator extends MapElement{
         this.direction = direction;
         icon = Bitmap.createBitmap(texture, 0, 0, (int) widthFrame, (int)heightFrame);
         lastUpdateTime = System.currentTimeMillis();
-
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
         item = null;
     }
 

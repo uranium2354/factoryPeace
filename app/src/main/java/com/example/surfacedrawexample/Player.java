@@ -7,6 +7,7 @@ import static com.example.surfacedrawexample.Map.ArrayId.getNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.getScaleId;
 import static com.example.surfacedrawexample.Map.ArrayId.getStaticImage;
 import static com.example.surfacedrawexample.Map.ArrayId.takeNumItemId;
+import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
 import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
 import static com.example.surfacedrawexample.Map.MapArray.map;
 import static com.example.surfacedrawexample.Map.MapArray.mapHologram;
@@ -20,11 +21,13 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.TextView;
 
+import com.example.surfacedrawexample.Map.Collector;
 import com.example.surfacedrawexample.Map.Hologram;
 import com.example.surfacedrawexample.Map.MapArray;
 import com.example.surfacedrawexample.Map.MapElement;
 import com.example.surfacedrawexample.Map.TransportBelt;
 import com.example.surfacedrawexample.Map.TransportBeltItem;
+import com.example.surfacedrawexample.interfaces.Storage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class Player {
     TextView textView;
     public boolean isPlace = false; //TODO включён ли режим строительства
     public boolean isDestroy = false;
+    public boolean isCraft = false;
     List<Hologram> orderHologram;
     List<Point> orderDestroy;
     MySurfaceView mySurfaceView;
@@ -57,6 +61,7 @@ public class Player {
     Bitmap selectDestroy;
     Point startSelect;
     Point stopSelect;
+    public Storage storage;
     public Player(int direction, Resources resources, float x, float y, TextView textView, MySurfaceView mySurfaceView){
         texture =  BitmapFactory.decodeResource(resources, R.drawable.entities_player);
         this.resources = resources;
@@ -88,6 +93,9 @@ public class Player {
             x += (float) dx / TEXTURE_SIZE;
             y += (float) dy / TEXTURE_SIZE;
         }
+    }
+    public void setIsCraft(){
+        isCraft = !isCraft;
     }
     public void setSelectedMapPlace(int id){
          selectedMapPlaceId = id;
@@ -135,7 +143,7 @@ public class Player {
                 Math.max(startSelect.y, stopSelect.y));
         canvas.drawBitmap(selectDestroy ,src, dst , paint);
        // textView.setText(Integer.toString( startSelect.x));
-        textView.setText(Integer.toString( getCraftIng(3, 5).id));
+       // textView.setText(Integer.toString( getCraftIng(3, 5).id));
     }
 
     int[] dR = new int[]{0, 3, 1, 2};
@@ -212,6 +220,7 @@ public class Player {
     }
     public void select(float posX, float posY){
        // textView.setText();
+        selectedMapPlace = null;
         if(!isDestroy){
 
             int posMapX = (int)posX / TEXTURE_SIZE;
@@ -239,8 +248,15 @@ public class Player {
                 }
                 return;
             }
-            if(map[posMapX][posMapY] != null)
+            if(map[posMapX][posMapY] != null){
+                if(map[posMapX][posMapY].id == 11){
+                    isCraft = true;
+                    storage.updateImage();
+                }
+                selectedMapPlace = map[posMapX][posMapY];
                 return;
+            }
+
 
             if(selectedMapPlaceId != 0){
                 Hologram placeHologram = new Hologram(getStaticImage(selectedMapPlaceId, rotationPlace), selectedMapPlaceId, rotationPlace, posMapX, posMapY, orderHologram.size());
@@ -313,6 +329,19 @@ public class Player {
                     select(i  *TEXTURE_SIZE, j*TEXTURE_SIZE);
                 }
             }
+        }
+    }
+    public void setText(String text){
+        textView.setText(text);
+    }
+    public void setCraft(int idCraft){
+        if(selectedMapPlace != null && selectedMapPlace.id == 11){
+            if(craftsItem[idCraft].idCraft[0] != 11){
+                return;
+            }
+            Collector collector = (Collector) selectedMapPlace;
+            collector.setCraft(idCraft);
+            storage.updateImage();
         }
     }
 }

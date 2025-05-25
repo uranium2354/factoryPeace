@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 import static com.example.surfacedrawexample.Map.MapArray.map;
 
@@ -43,7 +44,7 @@ public class CrossRoad extends MapElement{
         constructor(id, direction, mySurfaceView, resources, x, y);
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_crossroad);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -120,10 +121,13 @@ public class CrossRoad extends MapElement{
                 isСycle = false;
             }
             rotation = dir;
+            it.move(ArrayX*TEXTURE_SIZE, ArrayY * TEXTURE_SIZE ,ArrayX*TEXTURE_SIZE, ArrayY * TEXTURE_SIZE, 0);
             if(el.object.pullItem(it, true, ArrayX, ArrayY)){
                 return true;
             }
         }
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
         return false;
     }
     @Override

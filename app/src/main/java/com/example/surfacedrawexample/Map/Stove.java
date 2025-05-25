@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
@@ -40,7 +41,7 @@ public class Stove extends MapElement{
         constructor(id, direction, mySurfaceView, resources, x, y);
     }
     public void constructor(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
-        texture =  BitmapFactory.decodeResource(resources, R.drawable.map_stove);
+        texture =  getTextureId(id);
         ArrayX = x;
         ArrayY = y;
         widthFrame = this.texture.getWidth()/(float)IMAGE_COLUMN;
@@ -56,6 +57,8 @@ public class Stove extends MapElement{
       //  numIn = 3;
        // itemIn = new TransportBeltItem(5, 0, 0, TEXTURE_SIZE);
      //   numfuel = 5;
+        paint.setFilterBitmap(false);
+        paint.setAntiAlias(false);
     }
 
     //private void calculete

@@ -29,7 +29,7 @@ public class Hologram {
         widthFrame = image.getWidth();
         heightFrame = image.getHeight();
         paint = new Paint();
-        paint.setARGB(100 / getScaleId(id).x / getScaleId(id).y, 0, 0, 0);
+        paint.setARGB(100 , 0, 0, 0);
         this.orderIndex = orderIndex;
     }
     public Hologram(Hologram el){
