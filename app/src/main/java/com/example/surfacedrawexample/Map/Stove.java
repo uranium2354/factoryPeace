@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
@@ -76,6 +77,13 @@ public class Stove extends MapElement{
                 ( ArrayX + 2) * TEXTURE_SIZE, (ArrayY + 2)* TEXTURE_SIZE);
 
         canvas.drawBitmap(texture,src, dst , paint);
+        if(isDestroy){
+             src = new Rect(0, 0,
+            crossBimap.getWidth(),  crossBimap.getHeight());
+             dst = new Rect((int)ArrayX * TEXTURE_SIZE - 1, (int)ArrayY* TEXTURE_SIZE - 1,
+                    ( ArrayX + 2) * TEXTURE_SIZE, (ArrayY + 2)* TEXTURE_SIZE);
+            canvas.drawBitmap(crossBimap,src, dst , paint);
+        }
     }
     @Override
     synchronized public void updateState(){

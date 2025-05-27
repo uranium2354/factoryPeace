@@ -24,6 +24,7 @@ public class MapElement {
     int mapScaleY = 1;
     int hp;
     int startHp;
+    boolean isDestroy = false;
     public MapElement object;//TODO обект который размещён на карте например TransportBelt
     Paint paint;
     Bitmap icon;
@@ -67,5 +68,8 @@ public class MapElement {
     public void changeSize(int ts){};
     public String saveString(){return "";}
     public void readString(String s){}
+    public void destroyObject(){
+        isDestroy = true;
+    }
     synchronized public void updateState(){}
 }

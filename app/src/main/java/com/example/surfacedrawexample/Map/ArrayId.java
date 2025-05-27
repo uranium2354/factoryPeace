@@ -22,6 +22,7 @@ public class ArrayId {
     static  Class<? extends MapElement> [] arrayId = new Class[sizeId];
     static Bitmap[] image = new Bitmap[sizeId];
     static Bitmap[] texture = new Bitmap[sizeId];
+    public static Bitmap crossBimap;
     static Point[] scale = new Point[sizeId];
     static Bitmap[] backGroundImage = new Bitmap[3];
     public static Map<Integer, Bitmap[]> ore = new HashMap<>();
@@ -34,6 +35,7 @@ public class ArrayId {
 
     public ArrayId(MySurfaceView mySurfaceView, Resources resources) {
         arrayId[0] = null;
+        crossBimap = BitmapFactory.decodeResource(resources, R.drawable.item_cross);
         texture[1] = BitmapFactory.decodeResource(resources, R.drawable.map_transportbelt);
         TransportBelt transportBelt = new TransportBelt(1, 0, mySurfaceView, resources, 0, 0);
         arrayId[1] = TransportBelt.class;
@@ -155,6 +157,7 @@ public class ArrayId {
         }
         return null;
     }
+
     public static void updateButtons(){
         for(int  i = 0; i < sizeId; i++){
             numItem[i] = 200;

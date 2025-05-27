@@ -295,7 +295,7 @@ public class Player {
             if(map[posMapX][posMapY] == null){
                 return;
             }
-
+            map[posMapX][posMapY].destroyObject();
             orderDestroy.add(new Point(posMapX, posMapY));
         }
     }
