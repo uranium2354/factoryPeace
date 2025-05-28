@@ -37,13 +37,6 @@ public class TransportBelt extends MapElement {
     int[] dxi = {1, -1, 0, 0, -1, 1, -1, -1, 1, -1, 1, -1};
     int[] dyi = {0, 0, -1, 1, -1, 1, -1, 1, -1, 1, -1, 1};
     int n ;
-   // Vector<Integer> moveItem = new Vector<>();
-    /* public TransportBelt(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y, MapElement superClass){
-
-       super(id, direction,x, y, true,  TransportBelt.class);
-       superClass.object = this;
-       constructor(id, direction, mySurfaceView, resources, x, y);}
-  */
     public TransportBelt(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
 
         super(id, direction,x, y, true,  TransportBelt.class);

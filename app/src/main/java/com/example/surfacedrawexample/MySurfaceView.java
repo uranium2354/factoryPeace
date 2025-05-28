@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample;
 
+import static com.example.surfacedrawexample.Map.ArrayId.RotateBitmap;
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
 
 import static com.example.surfacedrawexample.Map.ArrayId.getBackGroundId;
@@ -53,6 +54,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     public float translateY = 0;
     boolean isMapGenerate = false;
     MapWorker mapWorker;
+    Bitmap background_left, background_left_top;
     TransportBelt transport_belt1, transport_belt2;
  //   arrayId;
     TransportBeltItem t;
@@ -62,27 +64,13 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     public MySurfaceView(Context context) {
         super(context);
-       // this.player = player;
-        holder = getHolder();
-        holder.addCallback(this);//"активируем" интерфейс SurfaceHolder.Callback
-        paint = new Paint();
-        paint.setARGB(100, 0, 0, 0);
-        x = 400;
-        y = 1100;
-        resources = getResources();
-        image = BitmapFactory.decodeResource(resources, R.drawable.sprites);
-        new ArrayId(this, resources);
-
-        speed = 20;//коэффициент скорости
-        character = new Sprite(image, this, x, y);
-        t = new TransportBeltItem(1, 0, 0, 128);
-        t.move(0, 1500, 1500, 0, 10000);
-        paint.setFilterBitmap(false);
-        paint.setAntiAlias(false);
-
+        constructor(context);
     }
     public MySurfaceView (Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        constructor(context);
+    }
+    private void constructor(Context context){
         getHolder().addCallback(this);
         holder = getHolder();
         holder.addCallback(this);//"активируем" интерфейс SurfaceHolder.Callback
@@ -92,14 +80,15 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         y = 1100;
         resources = getResources();
         image = BitmapFactory.decodeResource(resources, R.drawable.sprites);
-
-
+        background_left = BitmapFactory.decodeResource(resources, R.drawable.background_desert_edge_left);
+        background_left_top = BitmapFactory.decodeResource(resources, R.drawable.background_desert_edge_left_top);
         speed = 20;//коэффициент скорости
         character = new Sprite(image, this, x, y);
         t = new TransportBeltItem(1, 0, 0, 128);
         t.move(0, 1500, 1500, 0, 10000);
         paint.setFilterBitmap(false);
         paint.setAntiAlias(false);
+
     }
 
     @Override
@@ -121,14 +110,14 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
      
         int xPlayerCell = (int)player.x;
         int yPlayerCell = (int)player.y;
-        renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 2;
-        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE + 2;
+        renderingCellX = canvas.getWidth()/ 2 / TEXTURE_SIZE + 3;
+        renderingCellY = canvas.getHeight() /2 / TEXTURE_SIZE + 3;
         int startI = xPlayerCell - renderingCellX;
         int topI = xPlayerCell + renderingCellX;
         int startJ = yPlayerCell - renderingCellY;
         int topJ = yPlayerCell + renderingCellY;
-        for (int i = Math.max(0, startI - 1); i < Math.min(map.length, topI + 2); i++) {
-            for (int j = Math.max(0, startJ - 1); j < Math.min(map[i].length, topJ + 2); j++) {
+        for (int i = Math.max(-3, startI - 1); i < Math.min(map.length + 3, topI + 2); i++) {
+            for (int j = Math.max(-3, startJ - 1); j < Math.min(map[0].length + 3, topJ + 2); j++) {
                 if(i % 3 == 0 && j % 3 == 0)
                     drawBackGround(canvas, i, j);
             }
@@ -235,7 +224,27 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
                     (int)heightFrame, (int)heightFrame);
             Rect dst = new Rect((int)posX * TEXTURE_SIZE - 1, (int)posY* TEXTURE_SIZE - 1,
                     ( posX + 3) * TEXTURE_SIZE, (posY+ 3)* TEXTURE_SIZE);
-            canvas.drawBitmap(getBackGroundId(mapBackGround[posX][posY]), src, dst, paint);
+            if(posX < 0 || posY < 0 || posX >= mapBackGround.length || posY >= mapBackGround[0].length){
+
+                if(posX > mapBackGround.length && posY < 0 )
+                    canvas.drawBitmap(RotateBitmap(background_left_top, 90), src, dst, paint);
+                else if(posX < 0 && posY < 0 )
+                    canvas.drawBitmap(RotateBitmap(background_left_top, 0), src, dst, paint);
+                else if(posX > mapBackGround.length && posY > mapBackGround[0].length )
+                    canvas.drawBitmap(RotateBitmap(background_left_top, 180), src, dst, paint);
+                else if(posX < 0 && posY > mapBackGround[0].length )
+                    canvas.drawBitmap(RotateBitmap(background_left_top, 180+90), src, dst, paint);
+                else if(posX < 0)
+                    canvas.drawBitmap(RotateBitmap(background_left, 0), src, dst, paint);
+                else if(posX > mapBackGround.length)
+                    canvas.drawBitmap(RotateBitmap(background_left, 180), src, dst, paint);
+                else if(posY < 0)
+                    canvas.drawBitmap(RotateBitmap(background_left, 90), src, dst, paint);
+                else if(posY > mapBackGround[0].length)
+                    canvas.drawBitmap(RotateBitmap(background_left, -90 ), src, dst, paint);
+            }
+            else
+                canvas.drawBitmap(getBackGroundId(mapBackGround[posX][posY]), src, dst, paint);
     }
     public void drawOre(Canvas canvas, int posX, int posY){
         int heightFrame = getOreId(mapOre[posX][posY].id, mapOre[posX][posY].num).getHeight();

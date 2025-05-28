@@ -25,7 +25,7 @@ public class Stove extends MapElement{
     int IMAGE_ROWS = 2;
     boolean isСooking = false;
     int currentFrame = 0;
-    int speed = 5000;
+    int speed = 7000;
     int maxNum = 20;
     int numIn = 0;
     int numOut = 0;

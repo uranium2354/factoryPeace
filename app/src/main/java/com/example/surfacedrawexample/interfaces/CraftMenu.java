@@ -7,7 +7,7 @@ import com.example.surfacedrawexample.Player;
 
 public class CraftMenu {
     Player player;
-    public TableRow[] tableRows = new TableRow[20];
+    public TableRow[] tableRows = new TableRow[21];
     public CraftMenu(Player player){
         this.player = player;
     }

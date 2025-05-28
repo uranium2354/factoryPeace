@@ -27,7 +27,7 @@ public class Manipulator extends MapElement{
     int  heightScreen,  widthScreen;
     long currentFrame = 0;
     long startFrame = -100;
-    int speed = 3000;
+    int speed = 700;
     long lastUpdateTime;
     TransportBeltItem item;
     int[] dx = {1, -1, 0, 0, 0, 1, 0, -1, 1, 0, -1, 0};//TODO сдвиги туда куда манипулятор положет придмет

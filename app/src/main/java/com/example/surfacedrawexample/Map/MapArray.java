@@ -32,32 +32,10 @@ public class MapArray {
         this.playerStatic = player;
         mySurfaceViewStatic  = mySurfaceView;
         resourcesStatic = resources;
-        mapOre[8][8] = new Item(5);
-        mapOre[8][7] =  new Item(5);
-        mapOre[9][8] =  new Item(5);
-        mapOre[9][9] =  new Item(5);
-        mapOre[10][8] =  new Item(5);
-
-        mapOre[10][15] =  new Item(7);
-        mapOre[10][16] =  new Item(7);
-        mapOre[11][15] =  new Item(7);
-        mapOre[9][15] =  new Item(7);
-        mapOre[10][17] =  new Item(7);
-        mapOre[12][17] =  new Item(7);
-
-        mapOre[20][30] =  new Item(14);
-        mapOre[21][30] =  new Item(14);
-        mapOre[22][31] =  new Item(14);
-        mapOre[20][32] =  new Item(14);
-        mapOre[21][31] =  new Item(14);
-        mapOre[23][30] =  new Item(14);
-
-        mapOre[40][10] =  new Item(16);
-        mapOre[40][11] =  new Item(16);
-        mapOre[40][15] =  new Item(16);
-        mapOre[39][60] =  new Item(16);
-        mapOre[39][11] =  new Item(16);
-        mapOre[40][12] =  new Item(16);
+        addOreCluster(5, 3, 10, 5, 60);
+        addOreCluster(7, 0, 50, 0, 23);
+        addOreCluster(14, 10, 80, 10, 99);
+        addOreCluster(16, 5, 80, 5, 50);
         for(int i = 0; i < mapOre.length; i++){
             for(int j = 0 ; j < mapOre[i].length; j++){
                 if(mapOre[i][j] != null){
@@ -68,6 +46,22 @@ public class MapArray {
         }
         paint = new Paint();
         generateBackGround(resources);
+    }
+    private void addOreCluster(int oreType, int startX, int endX, int startY, int endY) {
+       Random random = new Random(oreType * 4546);
+
+        for (int x = startX; x <= endX; x++) {
+
+            for (int y = startY; y <= endY; y++) {
+                float dist = distance(x, y, endX / 2, endY / 2);
+                if(random.nextFloat() / dist  > 0.1 || dist < 7){
+                    mapOre[x][y] =  new Item(oreType);
+                }
+            }
+        }
+    }
+    float distance(int x1, int y1, int x2, int y2){
+        return (float)Math.sqrt((x1- x2) * (x1- x2) + (y1 - y2) * (y1 - y2));
     }
     public static MapElement getEl(int x, int y){//TODO возращает елемент карты
         if(x >= 0 && y >= 0 && map.length > x && map[0].length > y){

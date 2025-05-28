@@ -1,7 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
 public  class Crafts {
-    public static Craft[] craftsItem = new Craft[19];
+    public static Craft[] craftsItem = new Craft[21];
     public Crafts(){
         craftsItem[0] = new Craft(new int[]{3}, new Item(5), new Item(4), 500);
         craftsItem[1] = new Craft(new int[]{3}, new Item(16), new Item(17), 500);
@@ -22,8 +22,8 @@ public  class Crafts {
         craftsItem[16] = new Craft(new int[]{11}, new Item[]{new Item(13, 10), new Item(17, 3)}, new Item(2), 2000);
         craftsItem[17] = new Craft(new int[]{11}, new Item[]{new Item(14, 5), new Item(4, 3)}, new Item(3), 6000);
         craftsItem[18] = new Craft(new int[]{11}, new Item[]{new Item(1, 5)}, new Item(8), 3000);
-
-
+        craftsItem[19] = new Craft(new int[]{11}, new Item[]{new Item(4, 3), new Item(17, 3)}, new Item(23), 3000);
+        craftsItem[20] = new Craft(new int[]{11}, new Item[]{new Item(21, 15), new Item(14, 15), new Item(15, 15), new Item(19, 15)}, new Item(10), 30000);
     }
     public static Item getCraftIng(int idCraft, int iding){
         for(Craft craft : craftsItem){

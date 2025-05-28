@@ -25,7 +25,7 @@ public class Boer extends MapElement{
 
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
-    int speed = 1000; //TODO нужна чтобы сгладить неровности при движении item
+    int speed = 5000;
     TransportBeltItem[] item;
     long lastUpdateTime = 0;
     int xS, yS, xT, yT;
