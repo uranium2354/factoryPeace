@@ -1,6 +1,5 @@
 package com.example.surfacedrawexample.Map;
 
-import static com.example.surfacedrawexample.Map.MapArray.mapBackGround;
 import static com.example.surfacedrawexample.interfaces.Storage.setTextButtonId;
 
 import android.content.res.Resources;
@@ -18,19 +17,19 @@ import java.util.Map;
 import java.util.Random;
 
 public class ArrayId {
-    private static final int sizeId = 47;
-    static  Class<? extends MapElement> [] arrayId = new Class[sizeId];
-    static Bitmap[] image = new Bitmap[sizeId];
-    static Bitmap[] texture = new Bitmap[sizeId];
+    public static final int SIZE_ID = 47;
+    static  Class<? extends MapElement> [] arrayId = new Class[SIZE_ID];
+    static Bitmap[] image = new Bitmap[SIZE_ID];
+    static Bitmap[] texture = new Bitmap[SIZE_ID];
     public static Bitmap crossBimap;
-    static Point[] scale = new Point[sizeId];
+    static Point[] scale = new Point[SIZE_ID];
     static Bitmap[] backGroundImage = new Bitmap[3];
     public static Map<Integer, Bitmap[]> ore = new HashMap<>();
-    static Drawable[] storageIcon = new Drawable[sizeId];
-    static int[] numItem = new int[sizeId];
+    static Drawable[] storageIcon = new Drawable[SIZE_ID];
+    public static int[] numItem = new int[SIZE_ID];
 
     static Map<Integer, Integer> MapOre = new HashMap<>();
-    static boolean[] isRotate = new boolean[sizeId];
+    static boolean[] isRotate = new boolean[SIZE_ID];
     public static int TEXTURE_SIZE = 64;
 
     public ArrayId(MySurfaceView mySurfaceView, Resources resources) {
@@ -145,6 +144,13 @@ public class ArrayId {
         storageIcon[22] =  resources.getDrawable(R.drawable.item_board);
         image[22] =  BitmapFactory.decodeResource(resources, R.drawable.item_board);
 
+        texture[23] = BitmapFactory.decodeResource(resources, R.drawable.map_divider);
+        Divider divider = new Divider(23, 0, mySurfaceView, resources, 0, 0);
+        arrayId[23] = Divider.class;
+        image[23] = divider.icon;
+        scale[23] = new Point(1, 1);
+        isRotate[23] = true;
+        storageIcon[23] = resources.getDrawable(R.drawable.storage_divider);
         //generateBackGround(resources);
         backGroundImage[0] = BitmapFactory.decodeResource(resources, R.drawable.background_desert);
         backGroundImage[1] = BitmapFactory.decodeResource(resources, R.drawable.background_desert_1);
@@ -159,8 +165,8 @@ public class ArrayId {
     }
 
     public static void updateButtons(){
-        for(int  i = 0; i < sizeId; i++){
-            numItem[i] = 200;
+        //numItem[23] = 10;
+        for(int i = 0; i < SIZE_ID; i++){
             String s = "";
             if(numItem[i] > 999){
                 s = Integer.toString((int)(numItem[i] / 1000));
@@ -176,6 +182,16 @@ public class ArrayId {
             return numItem[id];
         }
         return 0;
+    }
+    public static void setDefaultStateNumItem(){
+        numItem[1] = 100;
+        numItem[2] = 25;
+        numItem[3] = 7;
+        numItem[8] = 17;
+        numItem[9] = 10;
+        numItem[10] = 1;
+        numItem[11] = 12;
+        numItem[23] = 10;
     }
     public static void addNumItemId(int id){
         if(id < arrayId.length){
@@ -261,7 +277,14 @@ public class ArrayId {
                 BitmapFactory.decodeResource(resources, R.drawable.background_copperore_0),
                 BitmapFactory.decodeResource(resources, R.drawable.background_copperore_1)
         });
-        int random = new Random().nextInt(0, ore.get(5).length) ;
+        int random = 0;
+        if (android.os.Build.VERSION.SDK_INT >= 35) {
+            random = new Random(790).nextInt(0, ore.get(5).length);
+
+        }
+        else{
+            random = (int)(Math.random() * ( ore.get(5).length + 1));
+        }
         MapOre.put(5, random);
         MapOre.put(7, random);
         MapOre.put(14, 0);

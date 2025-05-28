@@ -7,6 +7,8 @@ import static com.example.surfacedrawexample.Map.ArrayId.updateButtons;
 import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +30,9 @@ import com.example.surfacedrawexample.Map.MapArray;
 import com.example.surfacedrawexample.interfaces.CraftMenu;
 import com.example.surfacedrawexample.interfaces.OnSwipeTouchListener;
 import com.example.surfacedrawexample.interfaces.Storage;
+import com.example.surfacedrawexample.menu.MenuActivity;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +42,24 @@ public class MainActivity extends AppCompatActivity   {
     Storage storageClass;
     CraftMenu craftMenuCl;
     TextView textView;
+
+    private static final String PREFS_NAME = "MyAppPrefs";
+    private static final String FIRST_RUN_KEY = "is_first_run";
+    private static final String FIRST_SUBTITLES_KEY = "is_first_subtitles";
+    public static MainActivity MAIN_ACTIVITY;
+    public static boolean isFin = false;
     private MusicPlayer musicPlayer;
+    Save save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_main);
+         save = new Save(this);
+        if (isFirstRun()) {
+            save.clearSave();
+            markAppLaunched();
+        }
+        MAIN_ACTIVITY = this;
         ConstraintLayout mainLayout = findViewById(R.id.main);
         textView = findViewById(R.id.text2);
         super.onCreate(savedInstanceState);
@@ -61,7 +78,7 @@ public class MainActivity extends AppCompatActivity   {
         button = new Button(this);
         storage = findViewById(R.id.storage);
          craftMenuCl = new CraftMenu(player);
-         Save save = new Save(this);
+
 
         mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {
 
@@ -97,7 +114,16 @@ public class MainActivity extends AppCompatActivity   {
         sounds.add(R.raw.sound9);
         musicPlayer = new MusicPlayer(this, sounds);
         musicPlayer.playRandom();
-
+    }
+    public void setIsFin(boolean value) {
+        isFin = value;
+        if(isFin && isFirstSubtitles()){
+            appLaunchedSubtitles();
+            save.recordSave();
+            Intent intent = new Intent(MainActivity.this, Subtitles.class);
+            startActivity(intent);
+             finish();
+        }
     }
     @Override
     protected void onPause() {
@@ -208,5 +234,25 @@ public class MainActivity extends AppCompatActivity   {
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
+    }
+    private boolean isFirstRun() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getBoolean(FIRST_RUN_KEY, true);
+    }
+    private void markAppLaunched() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(FIRST_RUN_KEY, false);
+        editor.apply();
+    }
+    private boolean isFirstSubtitles() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getBoolean(FIRST_SUBTITLES_KEY, true);
+    }
+    private void appLaunchedSubtitles() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(FIRST_SUBTITLES_KEY, false);
+        editor.apply();
     }
 }

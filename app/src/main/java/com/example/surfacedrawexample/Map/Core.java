@@ -1,5 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
+import static com.example.surfacedrawexample.MainActivity.MAIN_ACTIVITY;
+import static com.example.surfacedrawexample.MainActivity.isFin;
 import static com.example.surfacedrawexample.Map.ArrayId.addNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
@@ -12,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.example.surfacedrawexample.MainActivity;
 import com.example.surfacedrawexample.MySurfaceView;
 import com.example.surfacedrawexample.R;
 
@@ -68,6 +71,9 @@ public class Core extends MapElement{
     @Override
     public  boolean pullItem(TransportBeltItem it,boolean isChange, int PosX, int PosY){
         addNumItemId(it.id);
+        if(it.id == 10){
+           MAIN_ACTIVITY.setIsFin(true);
+        }
         it = null;
         return true;
     }

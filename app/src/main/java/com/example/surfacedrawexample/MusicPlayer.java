@@ -2,7 +2,6 @@ package com.example.surfacedrawexample;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,7 +24,6 @@ public class MusicPlayer {
         releasePlayer();
 
         if (soundResources.isEmpty()) {
-            Log.e("musicPlayer", "no audio resources available");
             return;
         }
 
@@ -41,7 +39,7 @@ public class MusicPlayer {
             mediaPlayer.setOnCompletionListener(mp -> playRandom());
             mediaPlayer.start();
         } catch (Exception e) {
-            Log.e("MusicPlayer", "Error playing sound: " + e.getMessage());
+
         }
     }
 

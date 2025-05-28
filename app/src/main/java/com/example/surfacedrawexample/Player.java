@@ -57,7 +57,7 @@ public class Player {
     long lastUpdateTime;
     int widthSelectDestroy;
     int heightSelectDestroy;
-    long timePlace = 500; //TODO время на размещение одного объекта
+    long timePlace = 200; //TODO время на размещение одного объекта
     Bitmap selectDestroy;
     Point startSelect;
     Point stopSelect;

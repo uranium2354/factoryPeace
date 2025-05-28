@@ -9,6 +9,7 @@
     android:height="48dp"
     app:layout_constraintWidth_max="48dp"
     app:layout_constraintHeight_max="48dp"
+    android:textColor="#FF5722"
     android:gravity="right|bottom">
 
 </android.widget.Button>

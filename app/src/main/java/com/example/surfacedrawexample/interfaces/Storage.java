@@ -72,7 +72,7 @@ public class Storage  {
        idCell.add(9);
        idCell.add(10);
        idCell.add(11);
-       idCell.add(11);
+       idCell.add(23);
         this.craftMenu = craftMenu;
         buttonRotate.setOnClickListener(new View.OnClickListener() {
             @Override
