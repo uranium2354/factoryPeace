@@ -1,6 +1,5 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
-import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.mySurfaceViewStatic;
 import static com.example.surfacedrawexample.Map.MapArray.resourcesStatic;
 
@@ -24,10 +23,12 @@ public class MapElement {
     int mapScaleY = 1;
     int hp;
     int startHp;
+    public long frame;
     boolean isDestroy = false;
     public MapElement object;//TODO обект который размещён на карте например TransportBelt
     Paint paint;
-    Bitmap icon;
+    public Bitmap icon;
+    public int speed = 0;
     public MapElement(int id, int rotation,int x, int y, boolean isObjectSetState, Class<? extends MapElement> clazz){
        // this.object = object;
         this.id = id;
@@ -71,5 +72,5 @@ public class MapElement {
     public void destroyObject(){
         isDestroy = true;
     }
-    synchronized public void updateState(){}
+    synchronized public void updateState(long frame){}
 }

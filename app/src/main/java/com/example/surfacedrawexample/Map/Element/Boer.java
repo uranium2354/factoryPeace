@@ -1,4 +1,4 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
@@ -7,15 +7,13 @@ import static com.example.surfacedrawexample.Map.MapArray.mapOre;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class Boer extends MapElement{
+public class Boer extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -36,6 +34,7 @@ public class Boer extends MapElement{
     int[] dxOre = {0, 1, 0, 1};
     int[] dyOre = {0, 0, 1, 1};
     int oreNum = 0;
+    int lastItem = 0;
     boolean isRight = false;
     public Boer(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
 
@@ -84,7 +83,8 @@ public class Boer extends MapElement{
     }
     boolean isСycle = false;
     @Override
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if(System.currentTimeMillis() - lastUpdateTime >= speed){
             lastUpdateTime = System.currentTimeMillis();
             int nx = ArrayX + dxOre[oreNum];
@@ -92,8 +92,14 @@ public class Boer extends MapElement{
             oreNum++;
             oreNum %= 4;
             if(mapOre[nx][ny] != null){
-                pushItem(new TransportBeltItem(mapOre[nx][ny].id, (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE));
+                if(!pushItem(new TransportBeltItem(mapOre[nx][ny].id, (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE))){
+                    lastItem = mapOre[nx][ny].id;
+                }
             }
+        }
+        if(lastItem != 0){
+            pushItem(new TransportBeltItem(lastItem, (ArrayX + 1) * TEXTURE_SIZE, (ArrayY + 1) * TEXTURE_SIZE, TEXTURE_SIZE));
+            lastItem = 0;
         }
     }
 
@@ -111,11 +117,7 @@ public class Boer extends MapElement{
         isRight = !isRight;
         MapElement el = getEl(nx, ny);
         if(el != null && el.tag == "transportItem"){
-            if(isСycle == false){
-                isСycle = true;
-                el.object.updateState();
-                isСycle = false;
-            }
+           updatePush(el);
 
             if(el.object.pullItem(it, true, nx - dx[direction], ny - dy[direction])){
                 return true;
@@ -126,6 +128,15 @@ public class Boer extends MapElement{
     @Override
     public  boolean pullItem(TransportBeltItem it,boolean isChange, int PosX, int PosY){
         return false;
+    }
+    private void updatePush(MapElement el){
+        if(isСycle == false){
+            isСycle = true;
+            if(el.object.frame != frame){
+                el.object.updateState(frame);
+            }
+            isСycle = false;
+        }
     }
     @Override
     TransportBeltItem getItem(boolean isChange, int PosX, int PosY){

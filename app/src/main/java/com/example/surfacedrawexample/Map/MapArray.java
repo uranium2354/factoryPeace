@@ -1,17 +1,13 @@
 package com.example.surfacedrawexample.Map;
 
 import static com.example.surfacedrawexample.Map.ArrayId.backGroundImage;
-import static com.example.surfacedrawexample.Map.ArrayId.getBackGroundId;
-import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
 import static com.example.surfacedrawexample.Map.ArrayId.ore;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
 
+import com.example.surfacedrawexample.Map.Element.MapElement;
 import com.example.surfacedrawexample.MySurfaceView;
 import com.example.surfacedrawexample.Player;
 
@@ -22,8 +18,11 @@ public class MapArray {
     public static Hologram[][] mapHologram = new Hologram[100][100];
     public static int[][] mapBackGround = new int[100][100];
     public static Item[][] mapOre = new Item[100][100];
-    static MySurfaceView mySurfaceViewStatic;
-    static Resources resourcesStatic;
+    public static MySurfaceView mySurfaceViewStatic;
+    public static Resources resourcesStatic;
+    public static int speedTransportBelt = 200;
+    public static long lastUpdateTime = 0;
+    static long frame = 0;
    // MapElement c = TransportBelt;
     static Player playerStatic;
     static int TEXTURE_SIZE = 128;
@@ -84,11 +83,22 @@ public class MapArray {
     }
     public static  void updateStats(){//TODO обнавление объектов
         playerStatic.updateState();
+        frame++;
+        boolean isUpdateTransportBelt = false;
+        if(System.currentTimeMillis() - lastUpdateTime >= speedTransportBelt){
+            isUpdateTransportBelt = true;
+            lastUpdateTime = System.currentTimeMillis();
+        }
        for(int i = 0; i < map.length; i++){
            for(int j = 0; j < map[i].length; j++){
-               if(map[i][j] != null){
-                   map[i][j].object.updateState();
+               if(map[i][j] == null){
+                   continue;
                }
+               if(map[i][j].id == 1 && !isUpdateTransportBelt){
+                   continue;
+               }
+               map[i][j].object.updateState(frame);
+
            }
        }
     }

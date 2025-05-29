@@ -8,7 +8,6 @@ import static com.example.surfacedrawexample.Map.ArrayId.getScaleId;
 import static com.example.surfacedrawexample.Map.ArrayId.getStaticImage;
 import static com.example.surfacedrawexample.Map.ArrayId.takeNumItemId;
 import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
-import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
 import static com.example.surfacedrawexample.Map.MapArray.map;
 import static com.example.surfacedrawexample.Map.MapArray.mapHologram;
 
@@ -21,12 +20,10 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.TextView;
 
-import com.example.surfacedrawexample.Map.Collector;
+import com.example.surfacedrawexample.Map.Element.Collector;
 import com.example.surfacedrawexample.Map.Hologram;
-import com.example.surfacedrawexample.Map.MapArray;
-import com.example.surfacedrawexample.Map.MapElement;
-import com.example.surfacedrawexample.Map.TransportBelt;
-import com.example.surfacedrawexample.Map.TransportBeltItem;
+import com.example.surfacedrawexample.Map.Element.MapElement;
+import com.example.surfacedrawexample.Map.Element.TransportBeltItem;
 import com.example.surfacedrawexample.interfaces.Storage;
 
 import java.util.ArrayList;
@@ -123,15 +120,12 @@ public class Player {
             startSelect.x = start.x;
             startSelect.y = start.y;
             stopSelect = start;
-            //textView.setText("xaxaxaaxaxa");
         }
     }
     public void setDeltaSelectDestroy(Point delta){
         if(isDestroy){
             stopSelect.x += delta.x;
             stopSelect.y += delta.y;
-            //stopSelect.offset(delta.x, delta.y);
-
         }
     }
 

@@ -3,20 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:adjustViewBounds="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/storage_stove"
+        android:icon="@drawable/icon2"
         android:label="factory peace"
-        android:roundIcon="@drawable/storage_stove"
+        android:roundIcon="@drawable/icon2"
         android:supportsRtl="true"
         android:theme="@style/Theme.SurfaceDrawExample"
         tools:targetApi="31">
         <activity
+            android:name=".Education"
+            android:exported="false" />
+        <activity
             android:name=".Subtitles"
-            android:exported="true" >
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".menu.MenuActivity"
             android:exported="true"
@@ -29,7 +31,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

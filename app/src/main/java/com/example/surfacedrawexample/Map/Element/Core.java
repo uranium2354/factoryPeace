@@ -1,33 +1,30 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.MainActivity.MAIN_ACTIVITY;
-import static com.example.surfacedrawexample.MainActivity.isFin;
+import static com.example.surfacedrawexample.MainActivity.isEducationMode;
 import static com.example.surfacedrawexample.Map.ArrayId.addNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
-import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import com.example.surfacedrawexample.MainActivity;
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class Core extends MapElement{
+public class Core extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
     float widthFrame, heightFrame;
     int IMAGE_COLUMN = 1;
     int IMAGE_ROWS = 1;
-
+    boolean educationMode = false;
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
+
 
     public Core(int id, int direction, MySurfaceView mySurfaceView, Resources resources, int x, int y){
 
@@ -48,6 +45,7 @@ public class Core extends MapElement{
         tag = "transportItem";
         paint.setFilterBitmap(false);
         paint.setAntiAlias(false);
+        educationMode = isEducationMode;
     }
     @Override
     public void draw(Canvas canvas, long currentF){
@@ -69,7 +67,7 @@ public class Core extends MapElement{
 
 
     @Override
-    public  boolean pullItem(TransportBeltItem it,boolean isChange, int PosX, int PosY){
+    public  boolean pullItem(TransportBeltItem it, boolean isChange, int PosX, int PosY){
         addNumItemId(it.id);
         if(it.id == 10){
            MAIN_ACTIVITY.setIsFin(true);
@@ -85,4 +83,6 @@ public class Core extends MapElement{
     public void changeSize(int ts){
         TEXTURE_SIZE = ts;
     }
+
+
 }

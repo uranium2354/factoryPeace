@@ -1,4 +1,4 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
@@ -7,15 +7,13 @@ import static com.example.surfacedrawexample.Map.MapArray.map;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class CrossRoad extends MapElement{
+public class CrossRoad extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -80,9 +78,20 @@ public class CrossRoad extends MapElement{
             canvas.drawBitmap(crossBimap,src, dst , paint);
         }
     }
+
     boolean isСycle = false;
+    private void updatePush(MapElement el){
+        if(isСycle == false){
+            isСycle = true;
+            if(el.object.frame != frame){
+                el.object.updateState(frame);
+            }
+            isСycle = false;
+        }
+    }
     @Override
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if(System.currentTimeMillis() - lastUpdateTime >= speed){
             lastUpdateTime = System.currentTimeMillis();
             if(itemVer[n - 1] != null ){
@@ -123,13 +132,11 @@ public class CrossRoad extends MapElement{
         int ny = ArrayY + dy[dir];
         MapElement el = getEl(nx, ny);
         if(el != null && el.tag == "transportItem"){
-            if(isСycle == false){
-                isСycle = true;
-                el.object.updateState();
-                isСycle = false;
-            }
+           updatePush(el);
             rotation = dir;
-            it.move(ArrayX*TEXTURE_SIZE, ArrayY * TEXTURE_SIZE ,ArrayX*TEXTURE_SIZE, ArrayY * TEXTURE_SIZE, 0);
+            int lx = ArrayX*TEXTURE_SIZE + TEXTURE_SIZE / 2;
+            int ly = ArrayY * TEXTURE_SIZE + TEXTURE_SIZE / 2;
+            it.move(lx, ly,lx, ly, 0);
             if(el.object.pullItem(it, true, ArrayX, ArrayY)){
                 return true;
             }

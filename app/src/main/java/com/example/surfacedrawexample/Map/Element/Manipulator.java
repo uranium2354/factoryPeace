@@ -1,4 +1,4 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
@@ -6,15 +6,13 @@ import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class Manipulator extends MapElement{
+public class Manipulator extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -98,7 +96,8 @@ public class Manipulator extends MapElement{
             canvas.drawBitmap(crossBimap,src, dst , paint);
         }
     }
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if( System.currentTimeMillis() - lastUpdateTime > speed){
             item = pullOut(false);
             if(item != null){

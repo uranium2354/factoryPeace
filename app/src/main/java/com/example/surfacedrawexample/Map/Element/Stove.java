@@ -1,21 +1,18 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.Crafts.getCraftIng;
-import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class Stove extends MapElement{
+public class Stove extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -86,7 +83,8 @@ public class Stove extends MapElement{
         }
     }
     @Override
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if(System.currentTimeMillis() - lastUpdateTime >= speed){
             if(numIn > 0 && numfuel > 0 && numOut < maxNum){
                 lastUpdateTime = System.currentTimeMillis();

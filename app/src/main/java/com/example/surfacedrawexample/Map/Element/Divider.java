@@ -1,4 +1,4 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
@@ -12,7 +12,7 @@ import android.graphics.Rect;
 
 import com.example.surfacedrawexample.MySurfaceView;
 
-public class Divider extends MapElement{
+public class Divider extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -22,7 +22,7 @@ public class Divider extends MapElement{
 
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
-    int speed = 200, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
+    int speed = 50, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
     TransportBeltItem item;
     boolean isRight = true;
     long lastUpdateTime = 0;
@@ -75,7 +75,8 @@ public class Divider extends MapElement{
 
     boolean isСycle = false;
     @Override
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if(System.currentTimeMillis() - lastUpdateTime >= speed){
             lastUpdateTime = System.currentTimeMillis();
             if(item == null){
@@ -100,16 +101,21 @@ public class Divider extends MapElement{
         }
         MapElement el = getEl(nx, ny);
         if(el != null && el.tag == "transportItem"){
-            if(isСycle == false){
-                isСycle = true;
-                el.object.updateState();
-                isСycle = false;
-            }
+            updatePush(el);
             if(el.object.pullItem(it, true, ArrayX, ArrayY)){
                 return true;
             }
         }
         return false;
+    }
+    private void updatePush(MapElement el){
+        if(isСycle == false){
+            isСycle = true;
+            if(el.object.frame != frame){
+                el.object.updateState(frame);
+            }
+            isСycle = false;
+        }
     }
     @Override
     public  boolean pullItem(TransportBeltItem it,boolean isChange, int PosX, int PosY){

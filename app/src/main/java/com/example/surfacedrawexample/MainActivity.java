@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity   {
     Storage storageClass;
     CraftMenu craftMenuCl;
     TextView textView;
+    public static boolean isEducationMode = false;
 
     private static final String PREFS_NAME = "MyAppPrefs";
     private static final String FIRST_RUN_KEY = "is_first_run";
@@ -74,15 +75,10 @@ public class MainActivity extends AppCompatActivity   {
         logicThread.start();
         TableLayout tableLayout = findViewById(R.id.storage);
         TableLayout craftMenu = findViewById(R.id.craftsMenu);
-        //setContentView(R.layout.activity_main);
         button = new Button(this);
         storage = findViewById(R.id.storage);
-         craftMenuCl = new CraftMenu(player);
-
-
-        mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {
-
-        });
+        craftMenuCl = new CraftMenu(player);
+        mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {});
         storageClass = new Storage(4, this, tableLayout,mainLayout,findViewById(R.id.scrollMenu), getResources(), player);
         storageClass.addRowStorage(0);
         storageClass.addRowStorage(1);
@@ -101,7 +97,10 @@ public class MainActivity extends AppCompatActivity   {
                 save.recordSave();
             }
         });
-
+        addSound();
+        musicPlayer.playRandom();
+    }
+    private void addSound(){
         List<Integer> sounds = new ArrayList<>();
         sounds.add(R.raw.sound1);
         sounds.add(R.raw.sound2);
@@ -113,7 +112,6 @@ public class MainActivity extends AppCompatActivity   {
         sounds.add(R.raw.sound8);
         sounds.add(R.raw.sound9);
         musicPlayer = new MusicPlayer(this, sounds);
-        musicPlayer.playRandom();
     }
     public void setIsFin(boolean value) {
         isFin = value;

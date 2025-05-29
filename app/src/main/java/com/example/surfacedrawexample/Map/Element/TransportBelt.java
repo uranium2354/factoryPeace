@@ -1,19 +1,17 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
-import static com.example.surfacedrawexample.Map.ArrayId.getImageId;
 import static com.example.surfacedrawexample.Map.ArrayId.getTextureId;
 import static com.example.surfacedrawexample.Map.MapArray.getEl;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.example.surfacedrawexample.Map.MapArray;
 import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
 public class TransportBelt extends MapElement {
     Resources resources;
@@ -23,13 +21,13 @@ public class TransportBelt extends MapElement {
     int ICON_SIZE =  2;
     int IMAGE_COLUMN = 32;
     int IMAGE_ROWS = 40;
-
     int  heightScreen,  widthScreen;
     int currentFrame = 0;
     int speed = 200, deltaSpeed = 10; //TODO нужна чтобы сгладить неровности при движении item
     TransportBeltItem[] item;
     long lastUpdateTime = 0;
     int xS, yS, xT, yT;
+
     int[] dx = {1, -1, 0, 0, 0, 1, 0, -1, 1, 0, -1, 0};
     int[] dy = {0, 0, -1, 1, -1, 0, -1, 0, 0, 1, 0, 1};
     int[] dx2 = {-1, 1, 0, 0, 1, 0, -1, 0, 0, 1, 0, -1};
@@ -60,6 +58,7 @@ public class TransportBelt extends MapElement {
         tag = "transportItem";
         paint.setFilterBitmap(false);
         paint.setAntiAlias(false);
+
     }
 
     //private void calculete
@@ -128,8 +127,13 @@ public class TransportBelt extends MapElement {
     }
     boolean isСycle = false;
     @Override
-    synchronized public void updateState(){
-        if(System.currentTimeMillis() - lastUpdateTime >= speed){
+    synchronized public void updateState(long frame){
+        if(frame == this.frame){
+            return;
+        }
+        this.frame = frame;
+    //    if(System.currentTimeMillis() - lastUpdateTime >= speed){
+    //    if(frame % speed == 0){
             lastUpdateTime = System.currentTimeMillis();
             if(item[n - 1] != null ){
                 if(pushItem(item[n - 1])) {
@@ -139,28 +143,30 @@ public class TransportBelt extends MapElement {
                     moveItem(n - 1, n - 1);
             }
                 for(int i = item.length - 1; i >= 1; i--){
-                    if(i == 1 && item[i - 1] != null && !item[0].isMove()){
 
-                    }
-                    else if(item[i] == null && item[i - 1] != null){
+                   if(item[i] == null && item[i - 1] != null){
                         item[i] = item[i - 1];
                         moveItem(i - 1, i);
                         item[i - 1] = null;
                     }
                 }
+       // }
+    }
+    private void updatePush(MapElement el){
+        if(isСycle == false){
+            isСycle = true;
+            if(el.object.frame != frame){
+                el.object.updateState(frame);
+            }
+            isСycle = false;
         }
     }
-
      public boolean pushItem(TransportBeltItem it){
         int nx = ArrayX + dx[direction];
         int ny = ArrayY + dy[direction];
         MapElement el = getEl(nx, ny);
         if(el != null && el.tag == "transportItem"){
-            if(isСycle == false){
-                isСycle = true;
-                el.object.updateState();
-                isСycle = false;
-            }
+            updatePush(el);
 
             if(el.object.pullItem(it, true, ArrayX, ArrayY)){
                 return true;
@@ -239,6 +245,7 @@ public class TransportBelt extends MapElement {
                 if(parts[i] != "0" && Integer.parseInt(parts[i]) != 0){
                     item[i] = new TransportBeltItem(Integer.parseInt(parts[i]), 0, 0, TEXTURE_SIZE);
                     moveItem(i, i);
+
                 }
             }
         }

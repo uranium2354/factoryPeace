@@ -1,4 +1,4 @@
-package com.example.surfacedrawexample.Map;
+package com.example.surfacedrawexample.Map.Element;
 
 import static com.example.surfacedrawexample.Map.ArrayId.crossBimap;
 import static com.example.surfacedrawexample.Map.ArrayId.getImageId;
@@ -7,15 +7,15 @@ import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import com.example.surfacedrawexample.Map.Crafts;
-import com.example.surfacedrawexample.MySurfaceView;
-import com.example.surfacedrawexample.R;
 
-public class Collector extends MapElement{
+import com.example.surfacedrawexample.Map.Craft;
+import com.example.surfacedrawexample.Map.Item;
+import com.example.surfacedrawexample.MySurfaceView;
+
+public class Collector extends MapElement {
     Resources resources;
     Bitmap texture ;
     int direction;
@@ -102,32 +102,36 @@ public class Collector extends MapElement{
         }
     }
     @Override
-    synchronized public void updateState(){
+    synchronized public void updateState(long frame){
+        this.frame = frame;
         if(craft != null && System.currentTimeMillis() - lastUpdateTime >= speed * craft.time ){
-            boolean f = true;
-            for(int i = 0; i < craft.ingredients.length; i++){
-                if(ingredients[i].num < craft.ingredients[i].num)
-                    f = false;
-            }
-            if(product.num + craft.product.num >= maxNum)
-                f = false;
-
-            if(f){
+            if(enoughIngredientsForCrafting()){
                 lastUpdateTime = System.currentTimeMillis();
                 for(int i = 0; i < craft.ingredients.length; i++){
                     ingredients[i].num -= craft.ingredients[i].num;
                 }
                 product.num += craft.product.num;
-                isCrafting = true;
+                if(!enoughIngredientsForCrafting()){
+                    isCrafting = false;
+                }
             }
             else{
                 isCrafting = false;
             }
         }
     }
-
+    private  boolean enoughIngredientsForCrafting(){
+        boolean f = true;
+        for(int i = 0; i < craft.ingredients.length; i++){
+            if(ingredients[i].num < craft.ingredients[i].num)
+                f = false;
+        }
+        if(product.num + craft.product.num >= maxNum)
+            f = false;
+        return f;
+    }
     @Override
-    public  boolean pullItem(TransportBeltItem it,boolean isChange, int x, int y){
+    public  boolean pullItem(TransportBeltItem it, boolean isChange, int x, int y){
         if(craft == null){
             return false;
         }
@@ -135,9 +139,15 @@ public class Collector extends MapElement{
             if(el.id == it.id && el.num < maxNum){
                 if(isChange)
                     el.num++;
+
+                if(!isCrafting && enoughIngredientsForCrafting()){
+                    lastUpdateTime = System.currentTimeMillis();
+                    isCrafting = true;
+                }
                 return true;
             }
         }
+
         //isCrafting = true;
         return false;
     }
@@ -162,6 +172,7 @@ public class Collector extends MapElement{
     @Override
     public String saveString() {
         String ans = Integer.toString(craftId);
+
         return ans;
     }
 

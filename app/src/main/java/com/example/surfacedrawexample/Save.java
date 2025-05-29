@@ -15,10 +15,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.surfacedrawexample.Map.MapElement;
+import com.example.surfacedrawexample.Map.Element.MapElement;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

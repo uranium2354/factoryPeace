@@ -1,7 +1,5 @@
 package com.example.surfacedrawexample;
 
-import static androidx.core.content.ContextCompat.startActivity;
-import static com.example.surfacedrawexample.MainActivity.isFin;
 import static com.example.surfacedrawexample.Map.ArrayId.RotateBitmap;
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
 
@@ -15,7 +13,6 @@ import static com.example.surfacedrawexample.Map.MapArray.mapOre;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,12 +26,8 @@ import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
-import com.example.surfacedrawexample.Map.ArrayId;
-import com.example.surfacedrawexample.Map.MapElement;
-import com.example.surfacedrawexample.Map.TransportBelt;
-import com.example.surfacedrawexample.Map.TransportBeltItem;
-
-import java.util.ArrayList;
+import com.example.surfacedrawexample.Map.Element.TransportBelt;
+import com.example.surfacedrawexample.Map.Element.TransportBeltItem;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     Bitmap image;

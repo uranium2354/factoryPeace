@@ -9,6 +9,15 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 
+import com.example.surfacedrawexample.Map.Element.Boer;
+import com.example.surfacedrawexample.Map.Element.Collector;
+import com.example.surfacedrawexample.Map.Element.Core;
+import com.example.surfacedrawexample.Map.Element.CrossRoad;
+import com.example.surfacedrawexample.Map.Element.Divider;
+import com.example.surfacedrawexample.Map.Element.Manipulator;
+import com.example.surfacedrawexample.Map.Element.MapElement;
+import com.example.surfacedrawexample.Map.Element.Stove;
+import com.example.surfacedrawexample.Map.Element.TransportBelt;
 import com.example.surfacedrawexample.MySurfaceView;
 import com.example.surfacedrawexample.R;
 
@@ -27,6 +36,7 @@ public class ArrayId {
     public static Map<Integer, Bitmap[]> ore = new HashMap<>();
     static Drawable[] storageIcon = new Drawable[SIZE_ID];
     public static int[] numItem = new int[SIZE_ID];
+    public static int[] speed = new int[SIZE_ID];
 
     static Map<Integer, Integer> MapOre = new HashMap<>();
     static boolean[] isRotate = new boolean[SIZE_ID];
@@ -294,4 +304,5 @@ public class ArrayId {
       //  int random = new Random().nextInt(0, ore.get(id).length) ;
         return ore.get(id)[num];
     }
+
 }

@@ -4,7 +4,7 @@ public class Craft {
     public int[] idCraft;
     public Item[] ingredients;
     public Item product;
-    int time;
+    public int time;
     public Craft(int[] idCraft, Item[] ingredients,  Item product, int time){
         this.idCraft = idCraft;
         this.ingredients = ingredients;
