@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    >
+
+
+    <com.example.surfacedrawexample.MySurfaceView
+        android:id="@+id/mySurfaceView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        android:id = "@+id/storage">
+    </TableLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/storage"
+        app:layout_constraintTop_toBottomOf="@+id/acceptButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/scrollMenu">
+        <TableLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/craftsMenu"
+            android:background="@drawable/gui_background_scroll_menu"
+            android:padding="24dp">
+
+        </TableLayout>
+    </ScrollView>
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_rotation"
+        app:layout_constraintStart_toEndOf="@+id/storage"
+        android:id="@+id/rotateButton"
+        />
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_accept"
+
+        app:layout_constraintStart_toEndOf="@+id/rotateButton"
+        android:id="@+id/acceptButton"
+        />
+
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_destroy"
+        app:layout_constraintStart_toEndOf="@+id/acceptButton"
+        android:id="@+id/destroyButton"
+        />
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_craft"
+        app:layout_constraintStart_toEndOf="@+id/destroyButton"
+        android:id="@+id/craftButton"
+        />
+    <android.widget.Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="b"
+        android:textSize="0dp"
+        android:background="@drawable/gui_save"
+        app:layout_constraintStart_toEndOf="@+id/craftButton"
+        android:id="@+id/saveButton"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/destroyButton"
+        android:id="@+id/craftMenu">
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="5658585"
+        android:textSize="5sp"
+        android:id="@+id/text2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
