@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity   {
     Save save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        isEducationMode = false;
         setContentView(R.layout.activity_main);
          save = new Save(this);
         if (isFirstRun()) {
@@ -79,9 +79,11 @@ public class MainActivity extends AppCompatActivity   {
         storage = findViewById(R.id.storage);
         craftMenuCl = new CraftMenu(player);
         mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {});
-        storageClass = new Storage(4, this, tableLayout,mainLayout,findViewById(R.id.scrollMenu), getResources(), player);
+        storageClass = new Storage(2, this, tableLayout,mainLayout,findViewById(R.id.scrollMenu), getResources(), player);
         storageClass.addRowStorage(0);
         storageClass.addRowStorage(1);
+        storageClass.addRowStorage(2);
+        storageClass.addRowStorage(3);
         player.storage = storageClass;
         updateButtons();
         for(Craft craft : craftsItem){
@@ -151,11 +153,8 @@ public class MainActivity extends AppCompatActivity   {
         for(int i = 0; i < view.length; i++){
             Button bt = (Button) tr.getChildAt(i);
             bt.setText("10");
-          //  bt.setTextSize(6);
             bt.setId(rowNumber * view.length + i + 1000);
             bt.setBackground(view[i]);
-          //  bt.setCompoundDrawables(null, null, null, view[i]);
-
             bt.setOnClickListener(storageClass.onClickListener);
             buttonsStorage.add(bt);
             if(tr.getParent() != null) {

@@ -23,7 +23,7 @@ public class MapElement {
     int mapScaleY = 1;
     int hp;
     int startHp;
-    public long frame;
+    public long frame = 0;
     boolean isDestroy = false;
     public MapElement object;//TODO обект который размещён на карте например TransportBelt
     Paint paint;

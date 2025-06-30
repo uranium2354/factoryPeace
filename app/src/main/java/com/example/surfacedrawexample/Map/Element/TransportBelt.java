@@ -58,7 +58,7 @@ public class TransportBelt extends MapElement {
         tag = "transportItem";
         paint.setFilterBitmap(false);
         paint.setAntiAlias(false);
-
+        frame = 0;
     }
 
     //private void calculete

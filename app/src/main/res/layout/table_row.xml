@@ -19,18 +19,5 @@
         android:gravity="right|bottom"
         android:textColor="@color/white"
         />
-    <android.widget.Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:text="0"
-        android:background="@drawable/storage_boer"
-        android:gravity="right|bottom"
-        android:textColor="@color/white"/>
-    <android.widget.Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:text="0"
-        android:background="@drawable/storage_boer"
-        android:gravity="right|bottom"
-        android:textColor="@color/white"/>
+
 </TableRow>

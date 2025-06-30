@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.surfacedrawexample.EducationActivity;
 import com.example.surfacedrawexample.MainActivity;
 import com.example.surfacedrawexample.MusicPlayer;
 import com.example.surfacedrawexample.MySurfaceView;

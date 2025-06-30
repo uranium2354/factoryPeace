@@ -14,11 +14,11 @@
         android:theme="@style/Theme.SurfaceDrawExample"
         tools:targetApi="31">
         <activity
-            android:name=".Education"
+            android:name=".EducationActivity"
             android:exported="false" />
         <activity
             android:name=".Subtitles"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".menu.MenuActivity"
             android:exported="true"

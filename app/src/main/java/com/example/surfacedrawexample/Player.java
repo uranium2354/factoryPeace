@@ -1,5 +1,6 @@
 package com.example.surfacedrawexample;
 
+import static com.example.surfacedrawexample.MainActivity.isEducationMode;
 import static com.example.surfacedrawexample.Map.ArrayId.TEXTURE_SIZE;
 import static com.example.surfacedrawexample.Map.ArrayId.addNumItemId;
 import static com.example.surfacedrawexample.Map.ArrayId.getClassId;

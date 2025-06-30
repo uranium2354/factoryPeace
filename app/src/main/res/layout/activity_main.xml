@@ -31,9 +31,10 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/storage"
+
         app:layout_constraintTop_toBottomOf="@+id/acceptButton"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/scrollMenu">
         <TableLayout
 
@@ -54,6 +55,7 @@
         android:background="@drawable/gui_rotation"
         app:layout_constraintStart_toEndOf="@+id/storage"
         android:id="@+id/rotateButton"
+        android:alpha="0.7"
         />
     <android.widget.Button
         android:layout_width="48dp"
@@ -65,6 +67,7 @@
 
         app:layout_constraintStart_toEndOf="@+id/rotateButton"
         android:id="@+id/acceptButton"
+        android:alpha="0.7"
         />
 
     <android.widget.Button
@@ -76,6 +79,7 @@
         android:background="@drawable/gui_destroy"
         app:layout_constraintStart_toEndOf="@+id/acceptButton"
         android:id="@+id/destroyButton"
+        android:alpha="0.7"
         />
     <android.widget.Button
         android:layout_width="48dp"
@@ -86,6 +90,7 @@
         android:background="@drawable/gui_craft"
         app:layout_constraintStart_toEndOf="@+id/destroyButton"
         android:id="@+id/craftButton"
+        android:alpha="0.7"
         />
     <android.widget.Button
         android:layout_width="48dp"
@@ -96,17 +101,8 @@
         android:background="@drawable/gui_save"
         app:layout_constraintStart_toEndOf="@+id/craftButton"
         android:id="@+id/saveButton"
+        android:alpha="0.7"
         />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/destroyButton"
-        android:id="@+id/craftMenu">
-
-
-    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -14,6 +14,7 @@ import com.example.surfacedrawexample.Map.Element.Collector;
 import com.example.surfacedrawexample.Map.Element.Core;
 import com.example.surfacedrawexample.Map.Element.CrossRoad;
 import com.example.surfacedrawexample.Map.Element.Divider;
+import com.example.surfacedrawexample.Map.Element.InfiniteResources;
 import com.example.surfacedrawexample.Map.Element.Manipulator;
 import com.example.surfacedrawexample.Map.Element.MapElement;
 import com.example.surfacedrawexample.Map.Element.Stove;
@@ -161,6 +162,14 @@ public class ArrayId {
         scale[23] = new Point(1, 1);
         isRotate[23] = true;
         storageIcon[23] = resources.getDrawable(R.drawable.storage_divider);
+
+        texture[24] = BitmapFactory.decodeResource(resources, R.drawable.item_cathead);
+        InfiniteResources infiniteResources = new InfiniteResources(23, 0, mySurfaceView, resources, 0, 0);
+        arrayId[24] = InfiniteResources.class;
+        image[24] = divider.icon;
+        scale[24] = new Point(1, 1);
+        isRotate[24] = true;
+        storageIcon[24] = resources.getDrawable(R.drawable.item_cathead);
         //generateBackGround(resources);
         backGroundImage[0] = BitmapFactory.decodeResource(resources, R.drawable.background_desert);
         backGroundImage[1] = BitmapFactory.decodeResource(resources, R.drawable.background_desert_1);

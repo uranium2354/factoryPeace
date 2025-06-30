@@ -1,6 +1,7 @@
 package com.example.surfacedrawexample.Map;
 
 import static com.example.surfacedrawexample.Map.ArrayId.backGroundImage;
+import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
 import static com.example.surfacedrawexample.Map.ArrayId.ore;
 
 import android.content.res.Resources;
@@ -35,6 +36,7 @@ public class MapArray {
         addOreCluster(7, 0, 50, 0, 23);
         addOreCluster(14, 10, 80, 10, 99);
         addOreCluster(16, 5, 80, 5, 50);
+        map[5][5] =( new MapElement(24, 0, 5, 5, false, getClassId(24))).object;
         for(int i = 0; i < mapOre.length; i++){
             for(int j = 0 ; j < mapOre[i].length; j++){
                 if(mapOre[i][j] != null){

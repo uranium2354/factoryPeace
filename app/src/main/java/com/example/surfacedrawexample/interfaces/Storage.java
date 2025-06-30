@@ -54,7 +54,7 @@ public class Storage  {
        }
    }
 
-   int numberOfItemRow = 4;
+   int numberOfItemRow = 2;
     MainActivity main;
     Resources resources;
     Button buttonRotate;

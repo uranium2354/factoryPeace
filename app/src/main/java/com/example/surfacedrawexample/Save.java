@@ -22,13 +22,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Save {
 
     private final static String FILE_NAME_MAP = "Map.txt";
     private final static String FILE_NAME_STORAGE = "Storage.txt";
+    private final static String FILE_NAME_EDUCATION = "Education";
+    private final int maxLesson = 8;
+    private int currentLesson = 0;
     Context context;
     public Save(Context context){
         this.context = context;
@@ -83,12 +88,33 @@ public class Save {
         }
     }
     public void readSave(){
+       // clearMap();
+        readSaveMapFileName(FILE_NAME_MAP, false);
+        readSaveStorageFileName(FILE_NAME_STORAGE);
+    }
+    public void readSaveMapFileName(String fileName, boolean inAssets){
         FileInputStream fin = null;
-        FileInputStream fin2 = null;
+        InputStream is = null;
         try {
-            fin = context.openFileInput(FILE_NAME_MAP);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fin, StandardCharsets.UTF_8));
+            BufferedReader reader = null;
+
+            if(!inAssets){
+
+                fin = context.openFileInput(fileName);
+                 reader = new BufferedReader(new InputStreamReader(fin, StandardCharsets.UTF_8));
+
+            }
+            else {
+
+                is = context.getAssets().open(fileName);
+                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                for(int i = 0; i < 20; i++)
+                    Log.e("Read", "новый елемент ");
+            }
+
+
             String line;
+
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
                 if (parts.length != 4) {
@@ -107,6 +133,7 @@ public class Save {
                             map[i][j] = newEl;
                         }
                     }
+
                     line = reader.readLine();
                     newEl.readString(line);
                 } catch (NumberFormatException e) {
@@ -114,10 +141,40 @@ public class Save {
                 }
             }
             reader.close();
-            fin2 = context.openFileInput(FILE_NAME_STORAGE);
-            BufferedReader reader2 = new BufferedReader(new InputStreamReader(fin2, StandardCharsets.UTF_8));
+            updateButtons();
+        }
+        catch(IOException ex) {
+            Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        finally{
+
+            try{
+                if(fin!=null)
+                    fin.close();
+                if(is!=null)
+                    is.close();
+            }
+            catch(IOException ex){
+                if(!inAssets)
+                    Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+    public void clearMap(){
+        for (MapElement[] mapElements : map) {
+            Arrays.fill(mapElements, null);
+        }
+    }
+    public void readSaveStorageFileName(String fileName){
+        FileInputStream fin = null;
+        try {
+
+            fin = context.openFileInput(fileName);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fin, StandardCharsets.UTF_8));
             boolean isEmpty = true;
-            while ((line = reader2.readLine()) != null) {
+            String line;
+            while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
                 if (parts.length != 2) {
                     Log.e("Read", "Некорректный формат строки: " + line);
@@ -136,13 +193,12 @@ public class Save {
                 setDefaultStateNumItem();
             }
             updateButtons();
-            reader2.close();
+            reader.close();
         }
         catch(IOException ex) {
             Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
         finally{
-
             try{
                 if(fin!=null)
                     fin.close();
@@ -174,6 +230,14 @@ public class Save {
 
             Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+    public void showNextLesson() {
+        currentLesson++;
+        if(currentLesson > maxLesson){
+            return;
+        }
+        clearMap();
+        readSaveMapFileName(FILE_NAME_EDUCATION + Integer.toString(currentLesson)+ ".txt", true);
     }
 }
 
