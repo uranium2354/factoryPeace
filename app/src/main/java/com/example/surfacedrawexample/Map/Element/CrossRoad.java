@@ -134,6 +134,9 @@ public class CrossRoad extends MapElement {
         if(el != null && el.tag == "transportItem"){
            updatePush(el);
             rotation = dir;
+            if(TEXTURE_SIZE == 0){
+                return false;
+            }
             int lx = ArrayX*TEXTURE_SIZE + TEXTURE_SIZE / 2;
             int ly = ArrayY * TEXTURE_SIZE + TEXTURE_SIZE / 2;
             it.move(lx, ly,lx, ly, 0);

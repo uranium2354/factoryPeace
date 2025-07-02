@@ -147,4 +147,36 @@ public class Stove extends MapElement {
     public void changeSize(int ts){
         TEXTURE_SIZE = ts;
     }
+    @Override
+    public String saveString() {
+        String ans = "";
+        if(itemIn != null)
+            ans += itemIn.id;
+        else
+            ans += "0";
+        ans+=" ";
+        ans += numIn;
+        ans += " ";
+        ans += numfuel;
+        ans += " ";
+        ans += numOut;
+        return ans;
+    }
+
+    @Override
+    public void readString(String s) {
+        if(s == null){
+            return;
+        }
+        String[] parts = s.split(" ");
+        if(parts.length == 4){
+           if(Integer.parseInt(parts[0]) != 0){
+               itemIn = new TransportBeltItem(Integer.parseInt(parts[0]) , 0, 0, TEXTURE_SIZE);
+               itemOut = new TransportBeltItem(getCraftIng(id, itemIn.id).id, ArrayX + 1, ArrayY + 1, TEXTURE_SIZE);
+           }
+           numIn = Integer.parseInt(parts[1]);
+           numfuel = Integer.parseInt(parts[2]);
+           numOut = Integer.parseInt(parts[3]);
+        }
+    }
 }

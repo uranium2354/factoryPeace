@@ -128,7 +128,7 @@ public class TransportBelt extends MapElement {
     boolean isСycle = false;
     @Override
     synchronized public void updateState(long frame){
-        if(frame == this.frame){
+        if( frame == this.frame){
             return;
         }
         this.frame = frame;

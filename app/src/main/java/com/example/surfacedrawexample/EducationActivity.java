@@ -7,6 +7,7 @@ import static com.example.surfacedrawexample.Map.Crafts.craftsItem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,55 +33,83 @@ import com.example.surfacedrawexample.Map.MapArray;
 import com.example.surfacedrawexample.interfaces.CraftMenu;
 import com.example.surfacedrawexample.interfaces.OnSwipeTouchListener;
 import com.example.surfacedrawexample.interfaces.Storage;
+import com.example.surfacedrawexample.menu.MenuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EducationActivity extends AppCompatActivity {
 
-    Button button;
-    TableLayout storage;
-    Storage storageClass;
     CraftMenu craftMenuCl;
     TextView textView;
-    public static boolean isEducationMode = false;
 
-    private static final String PREFS_NAME = "MyAppPrefs";
-    private static final String FIRST_RUN_KEY = "is_first_run";
-    private static final String FIRST_SUBTITLES_KEY = "is_first_subtitles";
-    public static MainActivity MAIN_ACTIVITY;
-    public static boolean isFin = false;
     private MusicPlayer musicPlayer;
+    String[] eduText = new String[8];
+    int currentText = 0;
+    Button menu, next;
     Save save;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isEducationMode = true;
         setContentView(R.layout.activity_education);
         save = new Save(this);
-        if (isFirstRun()) {
-            save.clearSave();
-            markAppLaunched();
-        }
         super.onCreate(savedInstanceState);
         Crafts crafts = new Crafts();
         MySurfaceView mySurfaceView = (MySurfaceView) findViewById(R.id.mySurfaceView);
         new ArrayId(mySurfaceView, getResources());
         Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
+        player.educationMode = true;
         mySurfaceView.player = player;
-        MapArray m = new MapArray(getResources(), mySurfaceView, player);
+        textView = findViewById(R.id.educationtext);
+        MapArray m = new MapArray(getResources(), mySurfaceView, player, 20);
+        generateOres(m);
         LogicThread logicThread = new LogicThread();
         logicThread.setRunning(true);
         logicThread.start();
-        button = new Button(this);
-        storage = findViewById(R.id.storage);
         craftMenuCl = new CraftMenu(player);
         mySurfaceView.setOnTouchListener(new OnSwipeTouchListener(this, player, mySurfaceView) {});
         updateButtons();
         //save.readSave();
+        menu = findViewById(R.id.btnMenu);
+        next = findViewById(R.id.btnNext);
+        eduText[0] = getString(R.string.eduText0);
+        eduText[1] = getString(R.string.eduText1);
+        eduText[2] = getString(R.string.eduText2);
+        eduText[3] = getString(R.string.eduText3);
+        eduText[4] = getString(R.string.eduText4);
+        eduText[5] = getString(R.string.eduText5);
+        eduText[6] = getString(R.string.eduText6);
+        eduText[7] = getString(R.string.eduText7);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save.showNextLesson();
+                nextText();
+            }
+        });
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EducationActivity.this, MenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         save.showNextLesson();
-
         addSound();
         musicPlayer.playRandom();
+    }
+    private void generateOres(MapArray m){
+        m.generateOre(7, new Point[]{new Point(2,2),
+        new Point(2, 3),
+        new Point(3, 2),
+        new Point(3, 2),
+        new Point(4, 2)});
+        m.generateOre(5, new Point[]{new Point(6,4),
+                new Point(6, 5),
+                new Point(7, 4),
+                new Point(7, 5),
+                new Point(7, 6)});
+        m.generateSpriteOre();
     }
     private void addSound(){
         List<Integer> sounds = new ArrayList<>();
@@ -94,6 +123,10 @@ public class EducationActivity extends AppCompatActivity {
         sounds.add(R.raw.sound8);
         sounds.add(R.raw.sound9);
         musicPlayer = new MusicPlayer(this, sounds);
+    }
+    private void nextText(){
+        currentText = Math.min(eduText.length - 1, currentText + 1);
+        textView.setText(eduText[currentText]);
     }
     @Override
     protected void onPause() {
@@ -134,14 +167,5 @@ public class EducationActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
     }
-    private boolean isFirstRun() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        return prefs.getBoolean(FIRST_RUN_KEY, true);
-    }
-    private void markAppLaunched() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(FIRST_RUN_KEY, false);
-        editor.apply();
-    }
+
 }

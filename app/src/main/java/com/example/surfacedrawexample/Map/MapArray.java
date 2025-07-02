@@ -6,6 +6,7 @@ import static com.example.surfacedrawexample.Map.ArrayId.ore;
 
 import android.content.res.Resources;
 import android.graphics.Paint;
+import android.graphics.Point;
 
 
 import com.example.surfacedrawexample.Map.Element.MapElement;
@@ -15,10 +16,11 @@ import com.example.surfacedrawexample.Player;
 import java.util.Random;
 
 public class MapArray {
-    public static MapElement[][]  map = new MapElement[100][100];
-    public static Hologram[][] mapHologram = new Hologram[100][100];
-    public static int[][] mapBackGround = new int[100][100];
-    public static Item[][] mapOre = new Item[100][100];
+    int sizeMap = 100;
+    public static MapElement[][]  map ;
+    public static Hologram[][] mapHologram ;
+    public static int[][] mapBackGround ;
+    public static Item[][] mapOre;
     public static MySurfaceView mySurfaceViewStatic;
     public static Resources resourcesStatic;
     public static int speedTransportBelt = 200;
@@ -28,15 +30,36 @@ public class MapArray {
     static Player playerStatic;
     static int TEXTURE_SIZE = 128;
     static Paint paint;
-    public MapArray(Resources resources, MySurfaceView mySurfaceView, Player player){
+    public MapArray(Resources resources, MySurfaceView mySurfaceView, Player player, int sizeMap){
+
         this.playerStatic = player;
+        this.sizeMap = sizeMap;
+        setSizeMap(sizeMap);
         mySurfaceViewStatic  = mySurfaceView;
         resourcesStatic = resources;
+        paint = new Paint();
+        generateBackGround(resources);
+    }
+    private void setSizeMap(int sizeMap){
+        map = new MapElement[sizeMap][sizeMap];
+        mapHologram = new Hologram[sizeMap][sizeMap];
+        mapBackGround = new int[sizeMap][sizeMap];
+        mapOre = new Item[sizeMap][sizeMap];
+
+    }
+    public void generateOre(){
         addOreCluster(5, 3, 10, 5, 60);
         addOreCluster(7, 0, 50, 0, 23);
         addOreCluster(14, 10, 80, 10, 99);
         addOreCluster(16, 5, 80, 5, 50);
-        map[5][5] =( new MapElement(24, 0, 5, 5, false, getClassId(24))).object;
+        generateSpriteOre();
+    }
+    public void generateOre(int id, Point[] points){
+        for(Point pos : points){
+            mapOre[pos.x][pos.y] = new Item(id);
+        }
+    }
+    public void generateSpriteOre(){
         for(int i = 0; i < mapOre.length; i++){
             for(int j = 0 ; j < mapOre[i].length; j++){
                 if(mapOre[i][j] != null){
@@ -51,8 +74,6 @@ public class MapArray {
                 }
             }
         }
-        paint = new Paint();
-        generateBackGround(resources);
     }
     private void addOreCluster(int oreType, int startX, int endX, int startY, int endY) {
        Random random = new Random(oreType * 4546);
@@ -84,24 +105,28 @@ public class MapArray {
         }
     }
     public static  void updateStats(){//TODO обнавление объектов
-        playerStatic.updateState();
-        frame++;
-        boolean isUpdateTransportBelt = false;
-        if(System.currentTimeMillis() - lastUpdateTime >= speedTransportBelt){
-            isUpdateTransportBelt = true;
-            lastUpdateTime = System.currentTimeMillis();
-        }
-       for(int i = 0; i < map.length; i++){
-           for(int j = 0; j < map[i].length; j++){
-               if(map[i][j] == null){
-                   continue;
-               }
-               if(map[i][j].id == 1 && !isUpdateTransportBelt){
-                   continue;
-               }
-               map[i][j].object.updateState(frame);
+        try {
+            playerStatic.updateState();
+            frame++;
+            boolean isUpdateTransportBelt = false;
+            if(System.currentTimeMillis() - lastUpdateTime >= speedTransportBelt){
+                isUpdateTransportBelt = true;
+                lastUpdateTime = System.currentTimeMillis();
+            }
+            for(int i = 0; i < map.length; i++){
+                for(int j = 0; j < map[i].length; j++){
+                    if(map[i][j] == null){
+                        continue;
+                    }
+                    if(map[i][j].id == 1 && !isUpdateTransportBelt){
+                        continue;
+                    }
+                    map[i][j].object.updateState(frame);
 
-           }
-       }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

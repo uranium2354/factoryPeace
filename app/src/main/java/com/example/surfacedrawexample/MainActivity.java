@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity   {
-    Button button;
+    Button button, menu;
     TableLayout storage;
     Storage storageClass;
     CraftMenu craftMenuCl;
@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity   {
         new ArrayId(mySurfaceView, getResources());
         Player player = new Player(0, getResources(), 0, 0, textView, mySurfaceView);
         mySurfaceView.player = player;
-        MapArray m = new MapArray(getResources(), mySurfaceView, player);
+        MapArray m = new MapArray(getResources(), mySurfaceView, player, 100);
+        m.generateOre();
         LogicThread logicThread = new LogicThread();
         logicThread.setRunning(true);
         logicThread.start();
@@ -84,6 +85,16 @@ public class MainActivity extends AppCompatActivity   {
         storageClass.addRowStorage(1);
         storageClass.addRowStorage(2);
         storageClass.addRowStorage(3);
+        menu = findViewById(R.id.menuButton);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save.recordSave();
+                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         player.storage = storageClass;
         updateButtons();
         for(Craft craft : craftsItem){
@@ -129,6 +140,7 @@ public class MainActivity extends AppCompatActivity   {
     protected void onPause() {
         super.onPause();
         musicPlayer.pause();
+        save.recordSave();
     }
     @Override
     protected void onResume() {
@@ -142,6 +154,7 @@ public class MainActivity extends AppCompatActivity   {
     protected void onDestroy() {
         super.onDestroy();
         musicPlayer.releasePlayer();
+        save.recordSave();
     }
     public static List<Button> buttonsStorage = new ArrayList<>();
 

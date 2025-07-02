@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 
 import com.example.surfacedrawexample.Map.Element.Boer;
 import com.example.surfacedrawexample.Map.Element.Collector;
@@ -163,13 +164,13 @@ public class ArrayId {
         isRotate[23] = true;
         storageIcon[23] = resources.getDrawable(R.drawable.storage_divider);
 
-        texture[24] = BitmapFactory.decodeResource(resources, R.drawable.item_cathead);
+        texture[24] = BitmapFactory.decodeResource(resources, R.drawable.infinityresources);
         InfiniteResources infiniteResources = new InfiniteResources(23, 0, mySurfaceView, resources, 0, 0);
         arrayId[24] = InfiniteResources.class;
         image[24] = divider.icon;
         scale[24] = new Point(1, 1);
         isRotate[24] = true;
-        storageIcon[24] = resources.getDrawable(R.drawable.item_cathead);
+        storageIcon[24] = resources.getDrawable(R.drawable.infinityresources);
         //generateBackGround(resources);
         backGroundImage[0] = BitmapFactory.decodeResource(resources, R.drawable.background_desert);
         backGroundImage[1] = BitmapFactory.decodeResource(resources, R.drawable.background_desert_1);
@@ -312,6 +313,12 @@ public class ArrayId {
     public static Bitmap getOreId(int id, int num){
       //  int random = new Random().nextInt(0, ore.get(id).length) ;
         return ore.get(id)[num];
+    }
+    public static Drawable combineDrawables(Drawable background, Drawable foreground) {
+        if (background == null) return foreground;
+        if (foreground == null) return background;
+        Drawable[] layers = new Drawable[]{background, foreground};
+        return new LayerDrawable(layers);
     }
 
 }
