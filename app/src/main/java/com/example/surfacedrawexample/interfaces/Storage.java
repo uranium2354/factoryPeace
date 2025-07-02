@@ -1,7 +1,10 @@
 package com.example.surfacedrawexample.interfaces;
 
 import static androidx.core.view.ViewKt.setVisible;
+import static com.example.surfacedrawexample.MainActivity.MAIN_ACTIVITY;
 import static com.example.surfacedrawexample.MainActivity.buttonsStorage;
+import static com.example.surfacedrawexample.Map.ArrayId.combineDrawables;
+import static com.example.surfacedrawexample.Map.ArrayId.getBackGroundId;
 import static com.example.surfacedrawexample.Map.ArrayId.getClassId;
 import static com.example.surfacedrawexample.Map.ArrayId.getDrawableId;
 
@@ -40,7 +43,11 @@ public class Storage  {
             int id = v.getId();
             id-=1000;
             if(id >= 0 && id <idCell.size() ){
+                setImageButtonId(player.selectedMapPlaceId, getDrawableId(player.selectedMapPlaceId));
                 player.setSelectedMapPlace(idCell.get(id ));
+                setImageButtonId(idCell.get(id ), combineDrawables(getDrawableId(idCell.get(id )), resources.getDrawable(R.drawable.storage_frame)));
+
+
             }
         }
     };
@@ -53,6 +60,14 @@ public class Storage  {
            }
        }
    }
+    public static void setImageButtonId(int id, Drawable drawable){
+        for (Button el : buttonsStorage ){
+            int idNumIdCell = el.getId();
+            if(idCell.get(idNumIdCell - 1000) == id){
+                el.setBackground(drawable);
+            }
+        }
+    }
 
    int numberOfItemRow = 2;
     MainActivity main;

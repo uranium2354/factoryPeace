@@ -40,6 +40,7 @@ public class MenuActivity extends AppCompatActivity {
 
         MaterialButton btnPlay = findViewById(R.id.btnPlay);
         MaterialButton btnCreator = findViewById(R.id.btnCreator);
+        MaterialButton btnEducation = findViewById(R.id.btnEducation);
         List<Integer> sounds = new ArrayList<>();
         sounds.add(R.raw.sound1);
         sounds.add(R.raw.sound7);
@@ -48,7 +49,11 @@ public class MenuActivity extends AppCompatActivity {
         btnPlay.setOnClickListener(v -> {
             Intent intent = new Intent(MenuActivity.this, MainActivity.class);
             startActivity(intent);
-            
+            finish();
+        });
+        btnEducation.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, EducationActivity.class);
+            startActivity(intent);
             finish();
         });
         Button btnClearSave = findViewById(R.id.btnClear);

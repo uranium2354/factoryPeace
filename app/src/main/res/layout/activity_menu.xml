@@ -32,21 +32,28 @@
             android:id="@+id/btnPlay"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Play"
+            android:text="Играть"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEducation"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:text="Обучение"
             android:textSize="18sp"
             android:layout_marginBottom="16dp"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCreator"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Creator"
+            android:text="Создатели"
             android:textSize="18sp"
             android:layout_marginBottom="16dp"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClear"
             android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:text="Clear save"
+            android:layout_height="wrap_content"
+            android:text="Удалить сохранение"
             android:textSize="18sp"/>
     </LinearLayout>
     <LinearLayout

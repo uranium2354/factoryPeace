@@ -52,7 +52,7 @@ public class InfiniteResources extends MapElement {
         educationMode = isEducationMode;
     }
     @Override
-    public void draw(Canvas canvas, long currentF){
+    public void drawUpItem(Canvas canvas, long currentF){
         heightScreen = canvas.getHeight();
         widthScreen = canvas.getWidth();
         Rect src = new Rect((int)(0), (int)(0),
@@ -96,6 +96,18 @@ public class InfiniteResources extends MapElement {
         }
         return true;
     }
+    @Override
+    public String saveString() {
+        return Integer.toString(idItem);
+    }
 
+    @Override
+    public void readString(String s) {
+        if(s == null)
+            return;
+        String[] parts = s.split(" ");
+        if(parts.length == 1)
+            idItem = Integer.parseInt(parts[0]);
+    }
 }
 

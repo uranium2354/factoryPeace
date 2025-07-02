@@ -88,6 +88,8 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void draw(Canvas canvas) {
+        if(canvas == null)
+            return;
         super.draw(canvas);
 
         //mapWorker.draw(canvas);

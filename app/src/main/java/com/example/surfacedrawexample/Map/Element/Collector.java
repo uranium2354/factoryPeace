@@ -15,6 +15,8 @@ import com.example.surfacedrawexample.Map.Craft;
 import com.example.surfacedrawexample.Map.Item;
 import com.example.surfacedrawexample.MySurfaceView;
 
+import java.util.Objects;
+
 public class Collector extends MapElement {
     Resources resources;
     Bitmap texture ;
@@ -172,14 +174,45 @@ public class Collector extends MapElement {
     @Override
     public String saveString() {
         String ans = Integer.toString(craftId);
-
+        if(craftId == -1)
+            return ans;
+        for(int i = 0; i < ingredients.length; i++){
+            ans += " ";
+            ans += Integer.toString(ingredients[i].id);
+            ans += " ";
+            ans += Integer.toString(ingredients[i].num);
+        }
+        ans += " ";
+        ans += product.id;
+        ans += " ";
+        ans += product.num;
+        if(!isCrafting && enoughIngredientsForCrafting()){
+            lastUpdateTime = System.currentTimeMillis();
+            isCrafting = true;
+        }
         return ans;
     }
 
     @Override
     public void readString(String s) {
-        if(Integer.parseInt(s) != -1){
-            setCraft(Integer.parseInt(s));
+        String[] parts = s.split(" ");
+        if(Objects.equals(parts[0], "-1")){
+            return;
+        }
+        setCraft(Integer.parseInt(parts[0]));
+        if(parts.length  - 3 == craft.ingredients.length * 2){
+            for(int i = 1; i < parts.length - 2; i += 2){
+                int id = Integer.parseInt(parts[i]);
+                int num = Integer.parseInt(parts[i + 1]);
+                ingredients[(i - 1) / 2] = new Item(id, num);
+            }
+            int id = Integer.parseInt(parts[parts.length - 2]);
+            int num = Integer.parseInt(parts[parts.length - 1]);
+            product = new Item(id, num);
+            if(!isCrafting && enoughIngredientsForCrafting()){
+                lastUpdateTime = System.currentTimeMillis();
+                isCrafting = true;
+            }
         }
     }
 }
